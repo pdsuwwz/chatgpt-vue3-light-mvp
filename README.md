@@ -9,6 +9,14 @@
 * Pnpm 9.x
 * **VS Code 插件 `dbaeumer.vscode-eslint` >= v3.0.5 (pre-release)**
 
+## 运行效果
+
+![image](https://github.com/user-attachments/assets/6a066e66-1501-4816-880f-df37db658934)
+![image](https://github.com/user-attachments/assets/71515bdc-1831-4421-b8df-127577d8a24d)
+
+
+https://github.com/user-attachments/assets/42e8254f-d1bc-42e0-88dd-90279d040ae0
+
 
 ## 环境变量修改 API 密钥
 
@@ -22,7 +30,7 @@
 2. 编辑 `.env` 文件，填入你的 API 密钥
 
   ```sh
-  VITE_SPARK_KEY=你的_SiliconFlow_API_Key # 需要拼接，如 key123456:secret123456
+  VITE_SPARK_KEY=你的_星火_API_Key # 需要拼接，如 key123456:secret123456
   VITE_SILICONFLOW_KEY=你的_SiliconFlow_API_Key # 如 sk-xxxxxx
 
   ```
