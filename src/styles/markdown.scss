@@ -1,0 +1,72 @@
+.markdown-code-wrapper {
+  --at-apply: 'relative whitespace-initial';
+  --at-apply: 'bg-#f6f6f7';
+  --at-apply: 'line-height-24';
+  --at-apply: 'flex flex-col';
+  --at-apply: 'my-12px';
+  --at-apply: rounded-8 overflow-hidden;
+  
+  
+  .markdown-code-header {
+    --at-apply: flex justify-between items-center;
+    --at-apply: 'b-b b-b-solid b-b-#3c3c43:10';
+  }
+  
+  .markdown-code-copy {
+    --at-apply: px-14 py-8 rounded-4;
+    --at-apply: 'flex items-center justify-center';
+    --at-apply: 'b-none bg-transparent';
+    --at-apply: 'c-#808080' cursor-pointer;
+    --at-apply: transition-all-300 opacity-100 z-1;
+    
+    .markdown-copy-icon {
+      --at-apply: text-16 pointer-events-none mr-4;
+      --at-apply: 'i-ci:copy';
+    }
+    
+    .markdown-copy-text {
+      --at-apply: pointer-events-none;
+
+      &.default {
+        display: initial;
+      }
+
+      &.done {
+        display: none;
+      }
+    }
+    
+    &.copied {
+
+      .markdown-copy-icon {
+        --at-apply: 'i-ic:baseline-check';
+      }
+
+      .markdown-copy-text {
+
+        &.default {
+          display: none;
+        }
+  
+        &.done {
+          display: initial;
+        }
+      }
+    }
+  }
+  
+  .markdown-code-lang {
+    // --at-apply: absolute right-8 top-2;
+
+    --at-apply: pl-14 text-14 font-500 'c-#3c3c43/56';
+    --at-apply: transition-all-300 opacity-100 z-0;
+  }
+
+  pre {
+
+    code {
+      --at-apply: 'bg-#f6f6f7';
+      --at-apply: whitespace-pre py-15;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="160px" viewBox="0 0 200 160" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>空状态插图</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="132" height="30" rx="6"></rect>
+        <filter x="-7.2%" y="-28.3%" width="114.4%" height="163.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.202809511   0 0 0 0 0.25239968   0 0 0 0 0.366185838  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-3" x="0" y="0" width="132" height="30" rx="6"></rect>
+        <filter x="-7.2%" y="-28.3%" width="114.4%" height="163.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.202809511   0 0 0 0 0.25239968   0 0 0 0 0.366185838  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-5" x="0" y="0" width="132" height="30" rx="6"></rect>
+        <filter x="-7.2%" y="-28.3%" width="114.4%" height="163.3%" filterUnits="objectBoundingBox" id="filter-6">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.202809511   0 0 0 0 0.25239968   0 0 0 0 0.366185838  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="税务机器人-空状态" transform="translate(-620.000000, -355.000000)">
+            <g id="编组-6" transform="translate(170.000000, 245.000000)">
+                <g id="编组-8" transform="translate(450.000000, 110.000000)">
+                    <rect id="矩形" x="0" y="0" width="200" height="160"></rect>
+                    <rect id="矩形" fill="#EAF2FD" x="37" y="18" width="127" height="125" rx="8"></rect>
+                    <g id="编组-7" transform="translate(18.000000, 29.000000)">
+                        <g id="矩形">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        </g>
+                        <rect id="矩形" fill="#AEC7EA" x="34" y="5" width="28" height="7" rx="3.5"></rect>
+                        <rect id="矩形备份" fill="#EAF2FD" x="34" y="18" width="50" height="7" rx="3.5"></rect>
+                        <rect id="矩形" fill="#203062" x="2" y="2" width="26" height="26" rx="6"></rect>
+                        <g id="编组" transform="translate(7.000000, 7.000000)">
+                            <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+                            <path d="M12.0206667,11.078 L14.876,13.9326667 L13.9326667,14.876 L11.078,12.0206667 C10.0158255,12.8721474 8.69466738,13.3352701 7.33333333,13.3333333 C4.02133333,13.3333333 1.33333333,10.6453333 1.33333333,7.33333333 C1.33333333,4.02133333 4.02133333,1.33333333 7.33333333,1.33333333 C10.6453333,1.33333333 13.3333333,4.02133333 13.3333333,7.33333333 C13.3352701,8.69466738 12.8721474,10.0158255 12.0206667,11.078 Z M10.6833333,10.5833333 C11.5294086,9.7132571 12.0019113,8.54695285 12.0000058,7.33333333 C12.0000058,4.75466667 9.91133333,2.66666667 7.33333333,2.66666667 C4.75466667,2.66666667 2.66666667,4.75466667 2.66666667,7.33333333 C2.66666667,9.91133333 4.75466667,12.0000058 7.33333333,12.0000058 C8.54695285,12.0019113 9.7132571,11.5294086 10.5833333,10.6833333 L10.6833333,10.5833333 L10.6833333,10.5833333 Z" id="形状" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                    <g id="编组-7备份" transform="translate(51.000000, 66.000000)">
+                        <g id="矩形">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        </g>
+                        <rect id="矩形" fill="#AEC7EA" x="34" y="5" width="28" height="7" rx="3.5"></rect>
+                        <rect id="矩形备份" fill="#EAF2FD" x="34" y="18" width="50" height="7" rx="3.5"></rect>
+                        <rect id="矩形" fill="#203062" x="2" y="2" width="26" height="26" rx="6"></rect>
+                        <g id="编组" transform="translate(7.000000, 7.000000)">
+                            <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+                            <path d="M12.0206667,11.078 L14.876,13.9326667 L13.9326667,14.876 L11.078,12.0206667 C10.0158255,12.8721474 8.69466738,13.3352701 7.33333333,13.3333333 C4.02133333,13.3333333 1.33333333,10.6453333 1.33333333,7.33333333 C1.33333333,4.02133333 4.02133333,1.33333333 7.33333333,1.33333333 C10.6453333,1.33333333 13.3333333,4.02133333 13.3333333,7.33333333 C13.3352701,8.69466738 12.8721474,10.0158255 12.0206667,11.078 Z M10.6833333,10.5833333 C11.5294086,9.7132571 12.0019113,8.54695285 12.0000058,7.33333333 C12.0000058,4.75466667 9.91133333,2.66666667 7.33333333,2.66666667 C4.75466667,2.66666667 2.66666667,4.75466667 2.66666667,7.33333333 C2.66666667,9.91133333 4.75466667,12.0000058 7.33333333,12.0000058 C8.54695285,12.0019113 9.7132571,11.5294086 10.5833333,10.6833333 L10.6833333,10.5833333 L10.6833333,10.5833333 Z" id="形状" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                    <g id="编组-7备份-2" transform="translate(18.000000, 102.000000)">
+                        <g id="矩形">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-5"></use>
+                        </g>
+                        <rect id="矩形" fill="#AEC7EA" x="34" y="5" width="28" height="7" rx="3.5"></rect>
+                        <rect id="矩形备份" fill="#EAF2FD" x="34" y="18" width="50" height="7" rx="3.5"></rect>
+                        <rect id="矩形" fill="#203062" x="2" y="2" width="26" height="26" rx="6"></rect>
+                        <g id="编组" transform="translate(7.000000, 7.000000)">
+                            <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+                            <path d="M12.0206667,11.078 L14.876,13.9326667 L13.9326667,14.876 L11.078,12.0206667 C10.0158255,12.8721474 8.69466738,13.3352701 7.33333333,13.3333333 C4.02133333,13.3333333 1.33333333,10.6453333 1.33333333,7.33333333 C1.33333333,4.02133333 4.02133333,1.33333333 7.33333333,1.33333333 C10.6453333,1.33333333 13.3333333,4.02133333 13.3333333,7.33333333 C13.3352701,8.69466738 12.8721474,10.0158255 12.0206667,11.078 Z M10.6833333,10.5833333 C11.5294086,9.7132571 12.0019113,8.54695285 12.0000058,7.33333333 C12.0000058,4.75466667 9.91133333,2.66666667 7.33333333,2.66666667 C4.75466667,2.66666667 2.66666667,4.75466667 2.66666667,7.33333333 C2.66666667,9.91133333 4.75466667,12.0000058 7.33333333,12.0000058 C8.54695285,12.0019113 9.7132571,11.5294086 10.5833333,10.6833333 L10.6833333,10.5833333 L10.6833333,10.5833333 Z" id="形状" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
