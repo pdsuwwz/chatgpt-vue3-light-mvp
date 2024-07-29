@@ -188,7 +188,7 @@ handleResetState()
       >
         <NavigationNavBar>
           <template #bottom>
-            <div class="py-10 text-16">
+            <div class="pt-10 text-16">
               <span>当前模型：</span>
               <span class="font-italic font-bold">{{ currentLLMType?.label }}</span>
             </div>
