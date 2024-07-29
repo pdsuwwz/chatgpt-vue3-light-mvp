@@ -65,7 +65,7 @@ const handleToRepo = () => {
 <style lang="scss" scoped>
 
 .navigation-nav-header-container {
-  --at-apply: w-full flex items-center justify-center px-10;
+  --at-apply: w-full flex items-center justify-center py-10;
 
   .header-left,
   .header-right {
