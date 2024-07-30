@@ -55,8 +55,41 @@ pnpm dev
   VITE_SILICONFLOW_KEY=你的_SiliconFlow_API_Key # 通常以 `sk-` 开头，如 `sk-xxxxxx`
   ```
 
+## 🌍 模拟/真实 API 模式切换
 
-## 🦙 大模型 API 密钥获取指南
+本项目提供了一个模拟开发模式，用于在本地开发环境或 Github 等部署环境中模拟调用大模型相关策略，无需调用真实 API 接口。该模式在 [src/config/env.ts](src/config/env.ts) 文件中定义，由以下代码控制：
+
+```ts
+// src/config/env.ts
+
+const isDev = import.meta.env.DEV
+
+/**
+ * TODO: 若是本地开发环境、Github 部署环境，则模拟大模型相关策略，不调接口
+ */
+export const isMockDevelopment = isDev
+  || process.env.VITE_ROUTER_MODE === 'hash'
+
+// 打开此行，则会调用真实的大模型接口（需提前配置好 Key）
+// export const isMockDevelopment = false
+```
+### 默认配置
+
+默认情况下，在开发环境或使用 `hash` 路由模式时, `isMockDevelopment` 会被设置为 `true`, 这意味着应用将使用模拟数据而不是真实的大模型 API 接口。
+
+### 切换至真实 API
+
+如果想在所有环境中使用真实的 API，你有两个选择：
+
+1. **取消注释**：将最后一行的代码注释取消，设置 `isMockDevelopment = false`
+
+2. **修改逻辑**：全局搜索 `isMockDevelopment`, 并修改相应的 if 判断逻辑，使其默认使用真实接口
+
+**请注意，无论选择哪种方式，都需要确保项目已经正确配置了 `.env` API 密钥**
+
+---
+
+## 🦙 接入大语言模型 API
 
 ### 国内在线大模型
 
