@@ -1,9 +1,23 @@
 # chatgpt-vue3-light-mvp
 
-💭 一个 Chat Bot 对话 Web 端轻量级 MVP 原型模板, 基于 Vue3、TypeScript、Naive UI 、UnoCSS 等主流技术构建, 💡 简单集成大语言模型 API, 前端接口直连, 采用单轮 AI 对话模式, 每次提问独立响应, 无需上下文, 集成 markdown-it 预览, 易于定制二次开发和快速搭建 Chat 产品
+💭 一个可二次开发 Chat Bot 对话 Web 端 MVP 原型模板, 基于 Vue3、Vite 5、TypeScript、Naive UI 、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js 语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
+
+
+## 🎉 特性
+
+* 🛠️ **核心技术栈**：__Vite 5 + Vue 3 + TypeScript + ESLint (v9)__
+* 🎨 **UI 框架**：__Naive UI 2.x__
+* 🪄 **解放双手**：内置 **Unplugin Auto Import**，支持组件按需自动导入，提升开发效率
+* 🌟 **图标支持**：内置 **UnoCSS + Iconify**，实现原子化样式内联和图标按需自动导入
+* 💬 **AI 对话**：支持单轮对话，用户输入即得 AI 独立响应回复，无需上下文
+* 📝 **Markdown 预览**：支持多种编程语言代码高亮，集成 `markdown-it` 和 `highlight.js`
+* 🧪 **模拟开发模式**：提供本地模拟开发模式，无需真实 API 即可开始开发
+* 🔑 **环境变量管理**：通过 `.env` 文件管理 API 密钥，支持不同大模型的配置
+* 🌍 **大语言模型 API**：兼容 Spark 星火认知大模型、SiliconFlow、Ollama 等，允许自由扩展
+* 🚀 **灵活扩展**：轻量级模块化 MVP 设计，纯前端开发，项目结构清晰，快速搭建 AI 对话原型
 
 
 ## 前置条件
@@ -134,7 +148,7 @@ export const isMockDevelopment = isDev
 
 
 
-## 🌹 反馈与支持
+## 🌹 支持
 
 如果你喜欢这个项目或发现有用，可以点右上角 "Star" 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
 
@@ -142,3 +156,8 @@ export const isMockDevelopment = isDev
 ## 😎 Awesome
 
 * [awesome-vite](https://github.com/pdsuwwz/awesome-vite)
+
+## License
+
+[MIT](./LICENSE) License | Copyright © 2020-PRESENT [Wisdom](https://github.com/pdsuwwz)
+
