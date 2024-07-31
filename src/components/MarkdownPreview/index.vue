@@ -284,7 +284,7 @@ const handlePassClip = () => {
 }
 
 const emptyPlaceholder = isMockDevelopment
-  ? '当前为模拟环境，随便问一个问题，我才会消失 ~'
+  ? '当前为模拟环境\n随便问一个问题，我才会消失 ~'
   : '问一个问题，我才会消失 ~'
 </script>
 
@@ -346,8 +346,12 @@ const emptyPlaceholder = isMockDevelopment
           v-if="!displayText"
           size="large"
           class="font-bold"
-          :description="emptyPlaceholder"
         >
+          <div
+            whitespace-break-spaces
+            text-center
+            v-html="emptyPlaceholder"
+          ></div>
           <template #icon>
             <n-icon>
               <div class="i-hugeicons:ai-chat-02"></div>
