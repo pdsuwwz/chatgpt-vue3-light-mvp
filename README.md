@@ -1,6 +1,6 @@
 # chatgpt-vue3-light-mvp
 
-💭 一个可二次开发 Chat Bot 对话 Web 端 MVP 原型模板, 基于 Vue3、Vite 5、TypeScript、Naive UI 、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js 语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
+💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 5、TypeScript、Naive UI 、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js 语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
@@ -146,11 +146,58 @@ export const isMockDevelopment = isDev
 
 ![image](https://github.com/user-attachments/assets/8c6cf637-fd5b-45b5-93c2-f58927b7110c)
 
+---
 
+## 🔌 大模型响应处理
+
+由于不同大模型的响应结果结构有所差异，本项目封装了一个 `model` 字段，用于控制响应结果的转换和字段提取。
+
+### 🧠 已支持的模型
+
+- **（默认类型）模拟数据模型**：`standard`
+- **Spark 星火大模型**：`spark`
+- **llama 3 大模型**：`ollama3`
+- **SiliconFlow 硅基流动大模型**：`siliconflow`
+
+### 🔬 主要实现
+
+- **LLMTypes**: 定义了支持的大模型列表及其对应的 modelName，[详见代码](src/components/MarkdownPreview/transform/index.ts#L39)
+- **TransformStreamModelTypes**: 基于 LLMTypes 推导出来的定义的模型名称类型，[详见代码](src/components/MarkdownPreview/transform/index.ts#L58)
+- **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/transform/index.ts#L63)
+- **MarkdownPreview 组件**: 接收 `model` props 属性，根据不同模型类型处理流式响应，[详见代码](src/components/MarkdownPreview/index.vue#L15)
+
+### 📚 使用示例
+
+在使用 [`MarkdownPreview`](src/components/MarkdownPreview/index.vue) 组件时，通过设置 `model` 属性来指定当前使用的大模型类型：
+
+```html
+<MarkdownPreview
+  v-model:reader="outputTextReader"
+  :model="defaultLLMTypeName"
+  @failed="onFailedReader"
+  @completed="onCompletedReader"
+/>
+```
+
+其中 [`defaultLLMTypeName`](src/views/chat.vue#L15) 会根据映射自动选择对应的模型（也可具体指定一个模型）：
+
+```ts
+const defaultLLMTypeName: TransformStreamModelTypes = isMockDevelopment
+  ? 'standard'
+  : 'spark'
+```
+
+默认情况下，会处理 `spark` 模型，在模拟开发环境下，使用 standard 模型。具体的模型类型可以根据需求进行配置。
+
+#### 💡 提示
+
+> `defaultLLMTypeName` 会根据模型映射自动选择合适的模型，也可以手动指定模型
+> 
+> 如果后端返回的是可直接渲染的纯字符串（而非 JSON），standard 模型将适用于所有这种情况
 
 ## 🌹 支持
 
-如果你喜欢这个项目或发现有用，可以点右上角 "Star" 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
+如果你喜欢这个项目或发现有用，可以点右上角 [`Star`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp) 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
 
 
 ## 😎 Awesome

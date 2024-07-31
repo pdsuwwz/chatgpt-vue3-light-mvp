@@ -104,7 +104,7 @@ button:hover {
 
 ## 🌹 说明
 
-> * 如果此开源对您有帮助，您可以点<a target="_blank" href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp">开源仓库</a>右上角 "Star" 支持一下 谢谢！ ^_^ ⭐️
+> * 如果此开源对您有帮助，您可以点<a target="_blank" href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp">开源仓库</a>右上角 \`Star\` 支持一下 谢谢！ ^_^ ⭐️
 >
 > * 或者您可以 <a target="_blank" href="https://github.com/pdsuwwz">Follow</a> 一下, 我会不断开源更多有趣和实用的项目
 >
