@@ -101,6 +101,16 @@ export const isMockDevelopment = isDev
 
 **请注意，无论选择哪种方式，都需要确保项目已经正确配置了 `.env` API 密钥**
 
+### 接口函数修改
+
+请求的函数同样需要修改，找到（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/4887f64a1167051647e54bf8cc23e484ead77b4a/src/store/business/index.ts#L39)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/4887f64a1167051647e54bf8cc23e484ead77b4a/src/store/business/index.ts#L39) 函数，可以发现默认会调用 `spark` 模型接口
+
+改成你需要的模型接口调用即可：
+
+![image](https://github.com/user-attachments/assets/16557cbc-701c-4082-bb62-4fc29c74edd0)
+
+
+
 ---
 
 ## 🦙 接入大语言模型 API
