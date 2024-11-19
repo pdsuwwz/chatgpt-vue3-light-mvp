@@ -4,7 +4,7 @@ import MarkdownInstance from './plugins/markdown'
 import { type TransformStreamModelTypes, transformStreamValue } from './transform'
 
 interface Props {
-  reader: ReadableStreamDefaultReader<Uint8Array> | null
+  reader: ReadableStreamDefaultReader<Uint8Array> | null | undefined
   model?: TransformStreamModelTypes
 }
 

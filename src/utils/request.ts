@@ -226,7 +226,9 @@ export function useResHeadersAPI(headers: any, resData: any) {
     let filename: string | null = ''
 
     filename = extractFileNameFromContentDispositionHeader(disposition)
-    filename && downloadFile(resData, filename, headers['content-type'])
+    if (filename) {
+      downloadFile(resData, filename, headers['content-type'])
+    }
   }
 }
 

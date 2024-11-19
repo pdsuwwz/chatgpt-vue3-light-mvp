@@ -255,7 +255,8 @@ const RenderSinglePageContainer = ({
 /**
  * 页码容器
  */
-const RenderSinglePageNumber = ({ num = 1, ...attrs }: { num: number; key?: number; } & SinglePageContainerType) => {
+const RenderSinglePageNumber = ({ num = 1, ...attrs }: { num: number
+  key?: number } & SinglePageContainerType) => {
   const onClick = () => {
     activePage.value = num
     handleToChangePage()

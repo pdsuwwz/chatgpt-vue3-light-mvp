@@ -24,7 +24,8 @@ export const useBusinessStore = defineStore('business-store', {
     /**
      * Event Stream 调用大模型接口
      */
-    async createAssistantWriterStylized(writerOid, data): Promise<{error: number; reader: ReadableStreamDefaultReader<string> | null;}> {
+    async createAssistantWriterStylized(writerOid, data): Promise<{error: number
+      reader: ReadableStreamDefaultReader<string> | null}> {
       // TODO: 若部署了 Github Pages 则调用静态模拟数据
       if (isMockDevelopment) {
         await sleep(500)

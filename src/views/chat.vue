@@ -114,7 +114,12 @@ const activeElement = useActiveElement()
 const notUsingInput = computed(() => activeElement.value?.tagName !== 'TEXTAREA')
 
 const parser = new UAParser()
-const isMacos = parser.getOS().name.includes('Mac')
+const isMacos = computed(() => {
+  const os = parser.getOS()
+  if (!os) return
+
+  return os.name?.includes?.('macos')
+})
 
 const placeholder = computed(() => {
   if (stylizingLoading.value) {

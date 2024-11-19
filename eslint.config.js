@@ -42,7 +42,9 @@ export default defineFlatConfig([
       '@stylistic/no-extra-semi': 'error',
       '@stylistic/template-curly-spacing': ['error', 'always'],
       '@stylistic/space-before-blocks': ['error', 'always'],
-      '@stylistic/indent': ['error', 2],
+      '@stylistic/indent': ['error', 2, {
+        SwitchCase: 1
+      }],
       '@stylistic/object-curly-newline': ['error', {
         'ObjectExpression': {
           // 如果对象有属性，则要求换行。空对象则忽略
@@ -66,7 +68,17 @@ export default defineFlatConfig([
           }
         }
       }],
-      '@stylistic/no-trailing-spaces': ['error']
+      '@stylistic/no-trailing-spaces': ['error'],
+      '@stylistic/member-delimiter-style': ['error', {
+        multiline: {
+          delimiter: 'none',
+          requireLast: false
+        },
+        singleline: {
+          delimiter: 'semi',
+          requireLast: true
+        }
+      }]
     }
   },
   {
@@ -355,26 +367,10 @@ export default defineFlatConfig([
         }
       ),
       ...pluginTypeScript.configs.recommended.rules,
-      '@typescript-eslint/indent': ['error', 2, {
-        SwitchCase: 1
-      }],
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 1,
-      '@typescript-eslint/member-delimiter-style': [
-        'error',
-        {
-          multiline: {
-            delimiter: 'none',
-            requireLast: false
-          },
-          singleline: {
-            delimiter: 'semi',
-            requireLast: true
-          }
-        }
-      ],
       '@typescript-eslint/no-empty-function': 0,
       '@typescript-eslint/no-non-null-assertion': 0,
       '@typescript-eslint/consistent-type-imports': ['error', {
