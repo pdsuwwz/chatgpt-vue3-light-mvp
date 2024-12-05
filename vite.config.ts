@@ -32,6 +32,12 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(/^\/siliconflow/, '')
+        },
+        '/moonshot': {
+          target: 'https://api.moonshot.cn',
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/moonshot/, '')
         }
       }
     },

@@ -25,5 +25,5 @@ useCopyCode()
 </template>
 
 <style lang="scss">
-@use "@/styles/index.scss";
+@use "@/styles/index";
 </style>

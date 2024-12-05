@@ -14,7 +14,7 @@ const businessStore = useBusinessStore()
  */
 const defaultLLMTypeName: TransformStreamModelTypes = isMockDevelopment
   ? 'standard'
-  : 'spark'
+  : 'moonshot'
 
 const currentLLMType = computed(() => {
   return LLMTypes.find(v => v.modelName === defaultLLMTypeName)

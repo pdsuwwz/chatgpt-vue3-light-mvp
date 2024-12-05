@@ -37,7 +37,7 @@ export const useBusinessStore = defineStore('business-store', {
 
       // TODO: 本地运行调用接口
       return new Promise((resolve) => {
-        GlobalAPI.createSparkStylized(data.text)
+        GlobalAPI.createKimiMoonshotStylized(data.text)
           .then((res) => {
             if (res.body) {
               const reader = res.body

@@ -134,3 +134,38 @@ export async function createSiliconFlowStylized (text) {
   })
   return fetch(req)
 }
+
+
+/**
+ * Event Stream 调用大模型接口 Kimi Moonshot 月之暗面大模型 (Fetch 调用)
+*/
+export async function createKimiMoonshotStylized (text) {
+  const url = new URL(`${ location.origin }/moonshot/v1/chat/completions`)
+  const params = {
+  }
+  Object.keys(params).forEach(key => {
+    url.searchParams.append(key, params[key])
+  })
+
+  const req = new Request(url, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${ import.meta.env.VITE_MOONSHOT_KEY }`
+    },
+    body: JSON.stringify({
+      'model': 'moonshot-v1-8k',
+      stream: true,
+      messages: [
+        {
+          role: 'system',
+          content: '你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。'
+        }, {
+          role: 'user',
+          content: text
+        }
+      ]
+    })
+  })
+  return fetch(req)
+}

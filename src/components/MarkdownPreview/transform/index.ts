@@ -14,7 +14,7 @@ type TransformFunction<T = any> = (rawValue: T, ...args: any) => TransformResult
 
 /**
  * 转义处理响应值为 data: 的 json 字符串
- * 如: 科大讯飞星火大模型的 response
+ * 如: 科大讯飞星火、Kimi Moonshot 等大模型的 response
  */
 export const parseJsonLikeData = (content) => {
   if (content.startsWith('data: ')) {
@@ -52,6 +52,10 @@ export const LLMTypes = [
   {
     label: 'SiliconFlow 硅基流动大模型',
     modelName: 'siliconflow'
+  },
+  {
+    label: 'Kimi Moonshot 月之暗面大模型',
+    modelName: 'moonshot'
   }
 ] as const
 
@@ -86,6 +90,10 @@ export const transformStreamValue: Record<TransformStreamModelTypes, TransformFu
     }
   },
   siliconflow(readValue) {
+    // 与 spark 类似，直接复用
+    return this.spark(readValue)
+  },
+  moonshot(readValue) {
     // 与 spark 类似，直接复用
     return this.spark(readValue)
   },
