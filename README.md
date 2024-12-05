@@ -19,6 +19,17 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 * 🌍 **大语言模型 API**：兼容 Spark 星火认知大模型、Kimi Moonshot 月之暗面大模型、SiliconFlow、Ollama 等，允许自由扩展
 * 🚀 **灵活扩展**：轻量级模块化 MVP 设计，纯前端开发，项目结构清晰，快速搭建 AI 对话原型
 
+### 🧠 已支持的模型
+
+详见 [这里](#-大模型响应处理)
+
+- **（默认类型）模拟数据模型**：`standard`
+- **Spark 星火大模型**：`spark`
+- **llama 3 大模型**：`ollama3`
+- **SiliconFlow 硅基流动大模型**：`siliconflow`
+- **Kimi Moonshot 月之暗面大模型**：`moonshot`
+
+
 
 ## 前置条件
 
@@ -104,11 +115,12 @@ export const isMockDevelopment = isDev
 
 ### 接口函数修改
 
-请求的函数同样需要修改，找到（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/4887f64a1167051647e54bf8cc23e484ead77b4a/src/store/business/index.ts#L39)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/4887f64a1167051647e54bf8cc23e484ead77b4a/src/store/business/index.ts#L39) 函数，可以发现默认会调用 `Kimi Moonshot` 模型接口
+请求的函数同样需要修改，找到（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L39)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L39) 函数，可以发现默认会调用 `Kimi Moonshot` 模型接口
 
 改成你需要的模型接口调用即可：
 
-![image](https://github.com/user-attachments/assets/16557cbc-701c-4082-bb62-4fc29c74edd0)
+![image](https://github.com/user-attachments/assets/a9f4fb47-e704-45eb-a806-df9ab9af2e2c)
+
 
 
 
@@ -150,13 +162,15 @@ export const isMockDevelopment = isDev
 - **注册**：访问 [Moonshot 开放平台控制台](https://platform.moonshot.cn/console) 进行注册登录
 - **创建 API 密钥**：访问 [账户信息 - API Key 管理](https://platform.moonshot.cn/console/api-keys) 新建 API 密钥
 
-![image](https://github.com/user-attachments/assets/31e1ef13-869a-4695-a7c0-054d2c3e877f)
+![image](https://github.com/user-attachments/assets/718994f4-c05f-49e3-af4f-f36358413215)
+
 
 - **接口说明**：[官方示例代码 Chat Completion](https://platform.moonshot.cn/docs/api/chat#chat-completion)
 - **配置到本仓库**：将创建的 API 密钥填入 `.env` 文件中的 `VITE_MOONSHOT_KEY` 环境变量
 - **Moonshot现已支持的大模型**：[模型列表](https://platform.moonshot.cn/docs/api/chat#list-models)
 
-![image](https://github.com/user-attachments/assets/f320f495-cb17-48ff-99c4-aaedbf87fc84)
+![image](https://github.com/user-attachments/assets/5d615123-20c3-44cd-a7cb-17f4ed42ced9)
+
 
 
 ### 使用本地 Ollama 大模型
@@ -210,7 +224,7 @@ export const isMockDevelopment = isDev
 ```ts
 const defaultLLMTypeName: TransformStreamModelTypes = isMockDevelopment
   ? 'standard'
-  : 'kimi'
+  : 'moonshot'
 ```
 
 默认情况下，会处理 `kimi` 模型，在模拟开发环境下，使用 standard 模型。具体的模型类型可以根据需求进行配置。
