@@ -316,6 +316,9 @@
     "useTemplateRef": true,
     "DirectiveBinding": true,
     "MaybeRef": true,
-    "MaybeRefOrGetter": true
+    "MaybeRefOrGetter": true,
+    "BusinessState": true,
+    "usePreferredReducedTransparency": true,
+    "useSSRWidth": true
   }
 }
