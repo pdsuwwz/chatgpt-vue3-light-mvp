@@ -319,6 +319,7 @@
     "MaybeRefOrGetter": true,
     "BusinessState": true,
     "usePreferredReducedTransparency": true,
-    "useSSRWidth": true
+    "useSSRWidth": true,
+    "onElementRemoval": true
   }
 }

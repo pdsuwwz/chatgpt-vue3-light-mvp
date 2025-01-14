@@ -110,6 +110,6 @@ button:hover {
 >
 > * 开发环境 MacOS Ventura, VSCode, Chrome
 >
-> * 推荐一个 `Element Plus` + `Vite5` + `Vue3` + `TS` + `UnoCSS` 开源入门模板项目, 对 Element Plus UI 库感兴趣的朋友可以去看看。<a target="_blank" href="https://github.com/pdsuwwz/vite-ts-starter">地址在这里</a>
+> * 推荐一个 `Element Plus` + `Vite6` + `Vue3` + `TS` + `UnoCSS` 开源入门模板项目, 对 Element Plus UI 库感兴趣的朋友可以去看看。<a target="_blank" href="https://github.com/pdsuwwz/vite-ts-starter">地址在这里</a>
 >
-> * 另外一个 `Naive UI` 开源版本的，基于 `Vite5` + `Vue3` + `TS` + `UnoCSS` 的入门模板项目, 非常适合入门练习和二次开发。<a target="_blank" href="https://github.com/pdsuwwz/vue3-tab-demo">地址在这里</a>
+> * 另外一个 `Naive UI` 开源版本的，基于 `Vite6` + `Vue3` + `TS` + `UnoCSS` 的入门模板项目, 非常适合入门练习和二次开发。<a target="_blank" href="https://github.com/pdsuwwz/vue3-tab-demo">地址在这里</a>
