@@ -81,6 +81,55 @@ pnpm dev
   VITE_MOONSHOT_KEY=你的_Moonshot_API_Key # 通常以 `sk-` 开头，如 `sk-xxxxxx`
   ```
 
+
+## 🛠️ API 代理配置说明
+
+本项目采用纯前端架构，所有后端服务均由外部或本地其他服务提供。为解决开发环境中的跨域问题，项目使用了 `Vite` 的代理功能 `server.proxy`（详见[官方文档](https://vite.dev/config/server-options.html#server-proxy)）
+
+以下是当前仓库的[代理配置](./vite.config.ts#L21)
+
+```ts
+server: {
+  // ...
+  proxy: {
+    '/spark': {
+      target: 'https://spark-api-open.xf-yun.com',
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(/^\/spark/, '')
+    },
+    '/siliconflow': {
+      target: 'https://api.siliconflow.cn',
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(/^\/siliconflow/, '')
+    },
+    '/moonshot': {
+      target: 'https://api.moonshot.cn',
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(/^\/moonshot/, '')
+    }
+  }
+},
+// ...
+```
+
+### 注意事项
+
+1. **环境限制**: 该代理配置仅在开发环境（`development`）中生效。若生产环境部署时请根据实际情况调整服务器配置
+
+2. **路径匹配**: 请求路径需要与配置的代理路径前缀匹配，例如本地访问 `/spark/v1/chat/completions` 会被直接代理到 `https://spark-api-open.xf-yun.com/v1/chat/completions`
+
+### 生产环境部署
+
+生产环境建议使用以下方案之一：
+
+- 配置正确的 `CORS` 响应头
+- 使用 `Nginx` 反向代理
+- 统一域名和端口，避免跨域问题
+
+
 ## 🌍 模拟/真实 API 模式切换
 
 本项目提供了一个模拟开发模式，用于在本地开发环境或 Github 等部署环境中模拟调用大模型相关策略，无需调用真实 API 接口。该模式在 [src/config/env.ts](src/config/env.ts) 文件中定义，由以下代码控制：
