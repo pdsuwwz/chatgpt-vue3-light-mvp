@@ -41,8 +41,9 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 ## 运行效果
 
-![image](https://github.com/user-attachments/assets/6a066e66-1501-4816-880f-df37db658934)
-![image](https://github.com/user-attachments/assets/71515bdc-1831-4421-b8df-127577d8a24d)
+![image](https://github.com/user-attachments/assets/95b6c478-2522-4b6d-997f-6dabe29cf9d5)
+![image](https://github.com/user-attachments/assets/4f0b250b-beab-4076-a5a1-d2fe447f0a50)
+
 
 
 https://github.com/user-attachments/assets/42e8254f-d1bc-42e0-88dd-90279d040ae0
