@@ -29,7 +29,8 @@ export default defineConfig({
       warning: '#fe7d18',
       danger: '#fa5555',
       info: '#909399',
-      bgcolor: '#f2ecee'
+      bgcolor: '#f2ecee',
+      border: '#c2c2c2'
     }
   },
   rules: [

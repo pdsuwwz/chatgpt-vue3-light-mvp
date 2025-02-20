@@ -1,23 +1,28 @@
 import { defineStore } from 'pinia'
 
-import * as FilesTool from '@/utils/files-tool'
-
 import { sleep } from '@/utils/request'
 import * as GlobalAPI from '@/api'
-import * as GlobalMockData from '@/data'
 
 
 import * as TransformUtils from '@/components/MarkdownPreview/transform'
-import { isMockDevelopment } from '@/config'
+
+import { defaultModelName, modelMappingList } from '@/components/MarkdownPreview/models'
 
 export interface BusinessState {
   writerList: Array<any>
+  systemModelName: string
 }
 
 export const useBusinessStore = defineStore('business-store', {
   state: (): BusinessState => {
     return {
-      writerList: []
+      writerList: [],
+      systemModelName: defaultModelName
+    }
+  },
+  getters: {
+    currentModelItem (state) {
+      return modelMappingList.find(v => v.modelName === state.systemModelName)
     }
   },
   actions: {
@@ -26,18 +31,16 @@ export const useBusinessStore = defineStore('business-store', {
      */
     async createAssistantWriterStylized(writerOid, data): Promise<{error: number
       reader: ReadableStreamDefaultReader<string> | null}> {
-      // TODO: 若部署了 Github Pages 则调用静态模拟数据
-      if (isMockDevelopment) {
-        await sleep(500)
-        return {
-          error: 0,
-          reader: FilesTool.createMockReader()
-        }
-      }
 
-      // TODO: 本地运行调用接口
+      // 调用当前模型的接口
       return new Promise((resolve) => {
-        GlobalAPI.createKimiMoonshotStylized(data.text)
+        if (!this.currentModelItem?.chatFetch) {
+          return {
+            error: 1,
+            reader: null
+          }
+        }
+        this.currentModelItem.chatFetch(data.text)
           .then((res) => {
             if (res.body) {
               const reader = res.body

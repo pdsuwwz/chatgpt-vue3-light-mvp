@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import { isMockDevelopment } from '@/config'
 import MarkdownInstance from './plugins/markdown'
-import { type TransformStreamModelTypes, transformStreamValue } from './transform'
+
+import type { CrossTransformFunction, TransformFunction } from './models'
+import { defaultMockModelName } from './models'
 
 interface Props {
   reader: ReadableStreamDefaultReader<Uint8Array> | null | undefined
-  model?: TransformStreamModelTypes
+  model: string | null| undefined
+  transformStreamFn: TransformFunction | null | undefined
 }
 
 const props = withDefaults(
   defineProps<Props>(),
   {
-    reader: null,
-    model: 'standard'
+    reader: null
   }
 )
 
@@ -134,12 +135,12 @@ const readTextStream = async () => {
         break
       }
 
-      const transformer = transformStreamValue[props.model]
+      const transformer = props.transformStreamFn as CrossTransformFunction
       if (!transformer) {
         break
       }
 
-      const stream = transformer.call(transformStreamValue, value, textDecoder)
+      const stream = transformer(value, textDecoder)
       if (stream.done) {
         readIsOver.value = true
         break
@@ -283,9 +284,11 @@ const handlePassClip = () => {
   }
 }
 
-const emptyPlaceholder = isMockDevelopment
-  ? '当前为模拟环境\n随便问一个问题，我才会消失 ~'
-  : '问一个问题，我才会消失 ~'
+const emptyPlaceholder = computed(() => {
+  return defaultMockModelName === props.model
+    ? '当前为模拟环境\n随便问一个问题，我才会消失 ~'
+    : '问一个问题，我才会消失 ~'
+})
 </script>
 
 <template>

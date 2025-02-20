@@ -1,145 +1,117 @@
-type ContentResult = {
-  content: string
-  done?: never
-}
-
-type DoneResult = {
-  done: true
-  content?: never
-}
-
-type TransformResult = ContentResult | DoneResult
-type TransformFunction<T = any> = (rawValue: T, ...args: any) => TransformResult
-
-
-/**
- * 转义处理响应值为 data: 的 json 字符串
- * 如: 科大讯飞星火、Kimi Moonshot 等大模型的 response
- */
-export const parseJsonLikeData = (content) => {
-  if (content.startsWith('data: ')) {
-    const dataString = content.substring(6).trim()
-    if (dataString === '[DONE]') {
-      return {
-        done: true
-      }
-    }
-    try {
-      return JSON.parse(dataString)
-    } catch (error) {
-      console.error('JSON parsing error:', error)
-    }
-  }
-  return null
-}
-
-/**
- * 大模型映射列表
- */
-export const LLMTypes = [
-  {
-    label: '模拟数据模型',
-    modelName: 'standard'
-  },
-  {
-    label: 'Spark 星火大模型',
-    modelName: 'spark'
-  },
-  {
-    label: 'Ollama 3 大模型',
-    modelName: 'ollama3'
-  },
-  {
-    label: 'SiliconFlow 硅基流动大模型',
-    modelName: 'siliconflow'
-  },
-  {
-    label: 'Kimi Moonshot 月之暗面大模型',
-    modelName: 'moonshot'
-  }
-] as const
-
-export type TransformStreamModelTypes = typeof LLMTypes[number]['modelName']
-
-/**
- * 用于处理不同类型流的值转换器
- */
-export const transformStreamValue: Record<TransformStreamModelTypes, TransformFunction> = {
-  standard(readValue: Uint8Array, textDecoder: TextDecoder) {
-    let content = ''
-    if (readValue instanceof Uint8Array) {
-      content = textDecoder.decode(readValue, {
-        stream: true
-      })
-    } else {
-      content = readValue
-    }
-    return {
-      content
-    }
-  },
-  spark(readValue) {
-    const stream = parseJsonLikeData(readValue)
-    if (stream.done) {
-      return {
-        done: true
-      }
-    }
-    return {
-      content: stream.choices[0].delta.content || ''
-    }
-  },
-  siliconflow(readValue) {
-    // 与 spark 类似，直接复用
-    return this.spark(readValue)
-  },
-  moonshot(readValue) {
-    // 与 spark 类似，直接复用
-    return this.spark(readValue)
-  },
-  ollama3(readValue) {
-    const stream = JSON.parse(readValue)
-    return {
-      content: stream.message.content
-    }
-  }
-}
-
-const processParts = (buffer, controller: TransformStreamDefaultController, splitOn) => {
+// 处理SSE格式的数据
+const processSSE = (buffer, controller, splitOn) => {
   const parts = buffer.split(splitOn)
-  parts.slice(0, -1).forEach((part) => {
-    if (part.trim() !== '') {
-      controller.enqueue(part)
+  const lastPart = parts.pop()
+
+  for (const part of parts) {
+    const trimmedPart = part.trim()
+    if (!trimmedPart) continue
+
+    if (trimmedPart.startsWith('data:')) {
+      const content = trimmedPart.replace(/^data: /, '').trim()
+      if (content) {
+        try {
+          JSON.parse(content)
+          controller.enqueue(content)
+        } catch (e) {
+          // 不是JSON，发送原文本
+          controller.enqueue(content)
+        }
+      }
+    } else {
+      controller.enqueue(trimmedPart)
     }
-  })
-  return parts[parts.length - 1]
+  }
+
+  return lastPart
+}
+
+// 处理可能包含多个JSON对象的数据
+const processJSON = (buffer, controller) => {
+  let remaining = buffer
+  let processed = false
+
+  // 尝试找出所有完整的JSON对象
+  while (remaining.trim() !== '') {
+    let validJSON = ''
+    let validJSONEndIndex = -1
+
+    // 寻找第一个有效的JSON对象
+    for (let i = 0; i <= remaining.length; i++) {
+      try {
+        const possibleJSON = remaining.substring(0, i)
+        if (possibleJSON.endsWith('}')) {
+          JSON.parse(possibleJSON)
+          validJSON = possibleJSON
+          validJSONEndIndex = i
+          break
+        }
+      } catch (e) {
+        // 继续尝试
+      }
+    }
+
+    if (validJSON) {
+      try {
+        JSON.parse(validJSON)
+        controller.enqueue(validJSON)
+        remaining = remaining.substring(validJSONEndIndex).trim()
+        processed = true
+      } catch (e) {
+        // 如果最终解析出错，跳出循环
+        break
+      }
+    } else {
+      // 没找到有效JSON，退出循环
+      break
+    }
+  }
+
+  return processed ? remaining : buffer
 }
 
 export const splitStream = (splitOn) => {
   let buffer = ''
+
   return new TransformStream({
     transform(chunk, controller) {
       buffer += chunk
+      const trimmedBuffer = buffer.trim()
 
-      if (buffer.trim().startsWith('data:')) {
-        buffer = processParts(buffer, controller, splitOn)
-      } else {
-        // 尝试是否能够直接解析为 JSON
-        try {
-          JSON.parse(buffer)
-          buffer = processParts(buffer, controller, splitOn)
-        } catch (error) {
-          // 如果解析失败，按原文本处理
+      // 根据内容格式选择处理方法
+      if (trimmedBuffer.startsWith('data:')) {
+        // SSE格式
+        buffer = processSSE(buffer, controller, splitOn)
+      } else if (trimmedBuffer.startsWith('{') && (
+        trimmedBuffer.includes('"model"') ||
+          trimmedBuffer.includes('"message"') ||
+          trimmedBuffer.includes('"done"'))) {
+        const newBuffer = processJSON(buffer, controller)
+
+        // 如果JSON处理没有成功，当作普通文本处理
+        if (newBuffer === buffer) {
           controller.enqueue(chunk)
           buffer = ''
+        } else {
+          buffer = newBuffer
         }
+      } else {
+        // 普通文本格式
+        controller.enqueue(chunk)
+        buffer = ''
       }
     },
+
     flush(controller) {
       if (buffer.trim() !== '') {
-        controller.enqueue(buffer)
+        // 最后尝试处理为JSON
+        try {
+          controller.enqueue(buffer.trim())
+        } catch (e) {
+          // 不是JSON，发送原文本
+          controller.enqueue(buffer)
+        }
       }
     }
   })
 }
-

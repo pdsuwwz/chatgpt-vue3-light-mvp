@@ -23,12 +23,13 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 详见 [这里](#-大模型响应处理)
 
-- **（默认类型）模拟数据模型**：`standard`
-- **Spark 星火大模型**：`spark`
-- **llama 3 大模型**：`ollama3`
-- **SiliconFlow 硅基流动大模型**：`siliconflow`
-- **Kimi Moonshot 月之暗面大模型**：`moonshot`
-
+| 模型名称 | 模型标识符 | 需要 API Key | 可否本地运行 | 备注 |
+|----------|----------|----------|----------|----------|
+| （默认类型）模拟数据模型 | `standard` | × | √ | 开发环境默认使用 |
+| Ollama (Llama 3) 大模型 | `ollama3` | × | √ | 需本地安装运行 Ollama 服务 |
+| Spark 星火大模型 | `spark` | √ | × | 需配置 `VITE_SPARK_KEY` |
+| SiliconFlow 硅基流动大模型 | `siliconflow` | √ | × | 需配置 `VITE_SILICONFLOW_KEY` |
+| Kimi Moonshot 月之暗面大模型 | `moonshot` | √ | × | 需配置 `VITE_MOONSHOT_KEY` |
 
 
 ## 前置条件
@@ -137,47 +138,40 @@ server: {
 ```ts
 // src/config/env.ts
 
-const isDev = import.meta.env.DEV
-
 /**
- * TODO: 若是本地开发环境、Github 部署环境，则模拟大模型相关策略，不调接口
+ * TODO: 若是 Github 演示部署环境，则仅模拟大模型相关策略，不调接口
  */
-export const isMockDevelopment = isDev
-  || process.env.VITE_ROUTER_MODE === 'hash'
+export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
-// 打开此行，则会调用真实的大模型接口（需提前配置好 Key）
-// export const isMockDevelopment = false
 ```
 ### 默认配置
 
-默认情况下，在开发环境或使用 `hash` 路由模式时, `isMockDevelopment` 会被设置为 `true`, 这意味着应用将使用模拟数据而不是真实的大模型 API 接口。
+默认情况下，在开发环境，`isGithubDeployed` 会被设置为 `false`, 这意味着应用将默认使用模拟数据，但也可按照需求自行切换其他大模型 API 接口。
+
+当部署在演示环境时，也就是本项目在线预览地址中，则使用 `hash` 路由模式, `isGithubDeployed` 会被设置为 `true`, 这意味着应用将使用模拟数据而不是真实的大模型 API 接口。
 
 ### 切换至真实 API
 
 如果想在所有环境中使用真实的 API，你有两个选择：
 
-1. **取消注释**：将最后一行的代码注释取消，设置 `isMockDevelopment = false`
+1. **取消注释**：将最后一行的代码注释取消，设置 `isGithubDeployed = false`
 
-2. **修改逻辑**：全局搜索 `isMockDevelopment`, 并修改相应的 if 判断逻辑，使其默认使用真实接口
+2. **修改逻辑**：全局搜索 `isGithubDeployed`, 并修改相应的 if 判断逻辑，使其默认使用真实接口
 
 **请注意，无论选择哪种方式，都需要确保项目已经正确配置了 `.env` API 密钥**
 
 ### 接口函数修改
 
-请求的函数同样需要修改，找到（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L39)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L39) 函数，可以发现默认会调用 `Kimi Moonshot` 模型接口
-
-改成你需要的模型接口调用即可：
-
-![image](https://github.com/user-attachments/assets/a9f4fb47-e704-45eb-a806-df9ab9af2e2c)
-
-
+请求的函数已经针对目前项目内置的所有模型的响应结果做了统一处理，在（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L36)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L36) 函数，一般情况下，不需要修改此函数，除非遇到极个别模型比较特殊的响应结果格式，需要再额外处理下。
 
 
 ---
 
 ## 🦙 接入大语言模型 API
 
-### 国内在线大模型
+<details>
+<summary>国内在线大模型配置</summary><br>
+
 
 **1. Spark 星火认知大模型**：
 
@@ -220,9 +214,10 @@ export const isMockDevelopment = isDev
 
 ![image](https://github.com/user-attachments/assets/5d615123-20c3-44cd-a7cb-17f4ed42ced9)
 
+</details>
 
-
-### 使用本地 Ollama 大模型
+<details>
+<summary>使用本地 Ollama 大模型</summary><br>
 
 **Ollama3 大模型**：
 - **安装**：Ollama3 不需要 API 密钥，只需要在本地安装并运行 Ollama 即可。请参考 Ollama 官方文档进行安装：[Ollama GitHub](https://github.com/ollama/ollama)
@@ -234,55 +229,131 @@ export const isMockDevelopment = isDev
 
 ![image](https://github.com/user-attachments/assets/8c6cf637-fd5b-45b5-93c2-f58927b7110c)
 
+
+</details>
+
 ---
 
 ## 🔌 大模型响应处理
 
-由于不同大模型的响应结果结构有所差异，本项目封装了一个 `model` 字段，用于控制响应结果的转换和字段提取。
+由于不同大模型的 API 响应数据结构存在差异，本项目通过**统一的模型映射机制**和**响应转换函数**实现了多模型的无缝集成。核心逻辑封装在 [详见代码](src/components/MarkdownPreview/models/index.ts#L85) 中，支持灵活扩展和定制
+
+### 核心设计
+
+<details>
+<summary>1、模型映射机制</summary><br>
+
+通过 `modelMappingList` 定义支持的模型列表，每个模型包含以下关键属性：
+
+| 属性名称 | 类型 | 说明
+|----------|----------|----------|
+| label | string | 模型展示名称（仅用于 UI 显示） |
+| modelName | string | 模型唯一标识符（用于逻辑判断）|
+| transformStreamValue | TransformFunction | 流式响应数据的转换函数，用于解析不同模型的响应结构 |
+| chatFetch | (text: string) => Promise<Response> | 模型 API 请求函数，封装了请求参数和调用逻辑 |
+
+</details>
+
+<details>
+<summary>2、响应转换函数</summary><br>
+
+每个模型通过 `transformStreamValue` 函数处理流式响应数据，核心逻辑包括：
+
+* 解析原始响应数据（`Uint8Array` 或 `string`）
+* 提取有效内容字段（如 `content`）
+* 处理特殊终止信号（如 `[DONE]`）
+
+</details>
+
+
+<details>
+<summary>3、统一接口</summary><br>
+
+通过 `createAssistantWriterStylized` 方法封装模型调用逻辑，不用太关心底层实现细节，只需通过 `modelName` 切换模型。
+
+* 解析原始响应数据（`Uint8Array` 或 `string`）
+* 提取有效内容字段（如 `content`）
+* 处理特殊终止信号（如 `[DONE]`）
+
+</details>
+
+👉 可在 [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts) 中查看更多实现细节
 
 ### 🧠 已支持的模型
 
-- **（默认类型）模拟数据模型**：`standard`
-- **Spark 星火大模型**：`spark`
-- **llama 3 大模型**：`ollama3`
-- **SiliconFlow 硅基流动大模型**：`siliconflow`
-- **Kimi Moonshot 月之暗面大模型**：`moonshot`
+| 模型名称 | 模型标识符 | 需要 API Key | 可否本地运行 | 备注 |
+|----------|----------|----------|----------|----------|
+| （默认类型）模拟数据模型 | `standard` | × | √ | 开发环境默认使用 |
+| Ollama (Llama 3) 大模型 | `ollama3` | × | √ | 需本地安装运行 Ollama 服务 |
+| Spark 星火大模型 | `spark` | √ | × | 需配置 `VITE_SPARK_KEY` |
+| SiliconFlow 硅基流动大模型 | `siliconflow` | √ | × | 需配置 `VITE_SILICONFLOW_KEY` |
+| Kimi Moonshot 月之暗面大模型 | `moonshot` | √ | × | 需配置 `VITE_MOONSHOT_KEY` |
+
 
 ### 🔬 主要实现
 
-- **LLMTypes**: 定义了支持的大模型列表及其对应的 modelName，[详见代码](src/components/MarkdownPreview/transform/index.ts#L39)
-- **TransformStreamModelTypes**: 基于 LLMTypes 推导出来的定义的模型名称类型，[详见代码](src/components/MarkdownPreview/transform/index.ts#L58)
-- **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/transform/index.ts#L63)
-- **MarkdownPreview 组件**: 接收 `model` props 属性，根据不同模型类型处理流式响应，[详见代码](src/components/MarkdownPreview/index.vue#L15)
+- **modelMappingList**: 定义了支持的每个大模型的 modelName, 响应结果的处理以及请求 API 函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L85)
+  - **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L85)
+- **MarkdownPreview 组件**: 接收 `model` 和 `transformStreamFn` props 属性，根据不同模型类型处理流式响应，[详见代码](src/components/MarkdownPreview/index.vue#L9)
+
+> 本项目的 `MarkdownPreview` 组件接收 `model` props 属性是为了回显不同的 `Placeholder`，如果你不需要可直接删掉该 props 参数及对应的回显逻辑
 
 ### 📚 使用示例
 
-在使用 [`MarkdownPreview`](src/components/MarkdownPreview/index.vue) 组件时，通过设置 `model` 属性来指定当前使用的大模型类型：
+在使用 [`MarkdownPreview`](src/components/MarkdownPreview/index.vue) 组件时，通过设置 `model` 和 `transformStreamFn` 属性来指定当前使用的大模型类型：
 
 ```html
 <MarkdownPreview
+  ref="refReaderMarkdownPreview"
   v-model:reader="outputTextReader"
-  :model="defaultLLMTypeName"
+  :model="businessStore.currentModelItem?.modelName"
+  :transform-stream-fn="businessStore.currentModelItem?.transformStreamValue"
   @failed="onFailedReader"
   @completed="onCompletedReader"
 />
 ```
 
-其中 [`defaultLLMTypeName`](src/views/chat.vue#L15) 会根据映射自动选择对应的模型（也可具体指定一个模型）：
+其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L18) 状态管理来管控：
 
 ```ts
-const defaultLLMTypeName: TransformStreamModelTypes = isMockDevelopment
-  ? 'standard'
-  : 'moonshot'
+export const useBusinessStore = defineStore('business-store', {
+  state: (): BusinessState => {
+    return {
+      writerList: [],
+      systemModelName: defaultModelName
+    }
+  },
+  getters: {
+    currentModelItem (state) {
+      return modelMappingList.find(v => v.modelName === state.systemModelName)
+    }
+  },
+  actions: {
+    // ...
+  }
+})
 ```
 
-默认情况下，会处理 `kimi` 模型，在模拟开发环境下，使用 standard 模型。具体的模型类型可以根据需求进行配置。
+在模拟开发环境下，默认使用 `standard` 模型，同时也可以自定义修改为指定模型（尝试基于本项目二次开发的话，可以重点看下这个文件 [models/index.ts](src/components/MarkdownPreview/models/index.ts)），具体的模型类型可以根据需求进行自己二次配置:
+
+```ts
+/**
+ * Mock 模拟模型的 name
+ */
+export const defaultMockModelName = 'standard'
+
+/**
+ * 项目默认使用模型，按需修改此字段即可
+ */
+export const defaultModelName = defaultMockModelName
+```
+
 
 #### 💡 提示
 
-> `defaultLLMTypeName` 会根据模型映射自动选择合适的模型，也可以手动指定模型
+> `currentModelItem` 计算属性会根据模型映射自动选择对应的模型，也可以手动指定模型
 > 
-> 如果后端返回的是可直接渲染的纯字符串（而非 JSON），standard 模型将适用于所有这种情况
+> 如果后端返回的是可直接渲染的纯字符串（而非 JSON），`standard` 模型将适用于所有这种情况
 
 ## 🌹 支持
 

@@ -1,9 +1,9 @@
 import { createRouterGuards } from '@/router/permission'
 import routes from './routes'
 import { createWebHashHistory } from 'vue-router'
-import { isMockDevelopment } from '@/config'
+import { isGithubDeployed } from '@/config'
 
-const history = isMockDevelopment
+const history = isGithubDeployed
   ? createWebHashHistory()
   : createWebHistory()
 

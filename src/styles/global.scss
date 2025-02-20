@@ -60,3 +60,21 @@
     resize: none !important;
   }
 }
+
+.wrapper-tooltip-scroller {
+  --at-apply: max-w-285 max-h-100 overflow-y-auto;
+  --at-apply: whitespace-pre-wrap;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    --at-apply: rounded-3 "bg-white/50";
+  }
+
+  &::-webkit-scrollbar-track {
+    --at-apply: rounded-3 "bg-white/15";
+  }
+}

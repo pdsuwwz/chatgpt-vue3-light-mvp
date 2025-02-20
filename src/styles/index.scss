@@ -1,6 +1,6 @@
-@use "./global.scss";
-@use "./theme.scss";
-@use "./markdown.scss";
+@use "./global";
+@use "./theme";
+@use "./markdown";
 @use "nprogress/nprogress.css";
 
 body {

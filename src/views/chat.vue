@@ -1,7 +1,8 @@
 <script lang="tsx" setup>
-import { LLMTypes, type TransformStreamModelTypes } from '@/components/MarkdownPreview/transform'
-import { isMockDevelopment } from '@/config'
+import { defaultMockModelName, modelMappingList } from '@/components/MarkdownPreview/models'
 import { type InputInst } from 'naive-ui'
+import type { SelectBaseOption } from 'naive-ui/es/select/src/interface'
+import { isGithubDeployed } from '@/config'
 
 import { UAParser } from 'ua-parser-js'
 
@@ -9,16 +10,23 @@ const route = useRoute()
 const router = useRouter()
 const businessStore = useBusinessStore()
 
-/**
- * 默认大模型
- */
-const defaultLLMTypeName: TransformStreamModelTypes = isMockDevelopment
-  ? 'standard'
-  : 'moonshot'
 
-const currentLLMType = computed(() => {
-  return LLMTypes.find(v => v.modelName === defaultLLMTypeName)
+const modelListSelections = computed(() => {
+  return modelMappingList.map<SelectBaseOption>((modelItem) => {
+    let disabled = false
+    if (isGithubDeployed && modelItem.modelName !== defaultMockModelName) {
+      disabled = true
+    }
+
+    return {
+      label: modelItem.label,
+      value: modelItem.modelName,
+      // Github 演示环境禁用模型切换，拉取代码后可按自己需求修改
+      disabled
+    }
+  })
 })
+
 
 const currentChatId = computed(() => {
   return route.params.chatId
@@ -162,11 +170,7 @@ watch(
 
 
 const handleResetState = () => {
-  if (isMockDevelopment) {
-    inputTextString.value = ''
-  } else {
-    inputTextString.value = '使用中文，回答以下两个问题，分段表示\n1、你是什么模型？\n2、分别使用 Vue3 setup Composition API 语法糖、React 语法编写一个 Button 组件'
-  }
+  inputTextString.value = ''
 
   stylizingLoading.value = false
   nextTick(() => {
@@ -176,6 +180,62 @@ const handleResetState = () => {
   refReaderMarkdownPreview.value?.resetStatus()
 }
 handleResetState()
+
+
+const PromptTag = defineComponent({
+  props: {
+    text: {
+      type: String,
+      default: ''
+    }
+  },
+  setup(props) {
+    const handleClick = () => {
+      inputTextString.value = props.text
+      nextTick(() => {
+        refInputTextString.value?.focus()
+      })
+    }
+    return {
+      handleClick
+    }
+  },
+  render() {
+    return (
+      <div
+        b="~ solid transparent"
+        hover="shadow-[--shadow] b-primary bg-#e8e8e8"
+        class={[
+          'px-10 py-2 rounded-7 text-12',
+          'max-w-230 transition-all-300 select-none cursor-pointer',
+          'c-#525252 bg-#ededed'
+        ]}
+        style={{
+          '--shadow': '3px 3px 3px -1px rgba(0,0,0,0.1)'
+        }}
+        onClick={this.handleClick}
+      >
+        <n-ellipsis
+          tooltip={{
+            contentClass: 'wrapper-tooltip-scroller',
+            keepAliveOnHover: true
+          }}
+        >
+          {{
+            tooltip: () => this.text,
+            default: () => this.text
+          }}
+        </n-ellipsis>
+      </div>
+    )
+  }
+})
+
+const promptTextList = ref([
+  '打个招呼吧，顺便告诉我你的名字',
+  '使用中文，回答以下两个问题，分段表示\n1、你是什么模型？\n2、分别使用 Vue3 setup Composition API 语法糖、React 语法编写一个 Button 组件'
+])
+
 
 </script>
 
@@ -193,9 +253,39 @@ handleResetState()
       >
         <NavigationNavBar>
           <template #bottom>
-            <div class="pt-10 text-16">
+            <div
+              flex="~ justify-center items-center wrap"
+              class="pt-10 text-16"
+            >
               <span>当前模型：</span>
-              <span class="font-italic font-bold">{{ currentLLMType?.label }}</span>
+              <div
+                flex="~ justify-center items-center"
+              >
+                <n-select
+                  v-model:value="businessStore.systemModelName"
+                  class="w-280 pr-10 font-italic font-bold"
+                  placeholder="请选择模型"
+                  :options="modelListSelections"
+                />
+                <CustomTooltip
+                  :disabled="false"
+                >
+                  <div>注意：</div>
+                  <div>
+                    演示环境仅支持 “模拟数据模型”
+                  </div>
+                  <div>
+                    如需测试其他模型请克隆<a
+                      href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"
+                      target="_blank"
+                      class="px-2 underline c-warning font-bold"
+                    >本仓库</a>到本地运行
+                  </div>
+                  <template #trigger>
+                    <span class="cursor-help font-bold c-primary text-17 i-radix-icons:question-mark-circled"></span>
+                  </template>
+                </CustomTooltip>
+              </div>
             </div>
           </template>
         </NavigationNavBar>
@@ -209,7 +299,8 @@ handleResetState()
         <MarkdownPreview
           ref="refReaderMarkdownPreview"
           v-model:reader="outputTextReader"
-          :model="defaultLLMTypeName"
+          :model="businessStore.currentModelItem?.modelName"
+          :transform-stream-fn="businessStore.currentModelItem?.transformStreamValue"
           @failed="onFailedReader"
           @completed="onCompletedReader"
         />
@@ -221,6 +312,19 @@ handleResetState()
         p="14px"
         py="0"
       >
+        <div
+          w-full
+          flex="~ justify-start"
+          class="px-1em pb-10"
+        >
+          <n-space>
+            <PromptTag
+              v-for="(textItem, idx) in promptTextList"
+              :key="idx"
+              :text="textItem"
+            />
+          </n-space>
+        </div>
         <div
           relative
           flex="1"
