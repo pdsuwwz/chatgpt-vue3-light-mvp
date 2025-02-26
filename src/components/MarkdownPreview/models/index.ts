@@ -80,6 +80,8 @@ export const defaultMockModelName = 'standard'
 /**
  * 项目默认使用模型，按需修改此字段即可
  */
+
+// export const defaultModelName = 'spark'
 export const defaultModelName = defaultMockModelName
 
 export const modelMappingList: TypesModelLLM[] = [
@@ -205,7 +207,7 @@ export const modelMappingList: TypesModelLLM[] = [
           messages: [
             {
               role: 'system',
-              content: '你叫小明同学，喜欢探索新的前端知识，目前正在学习 AI 大模型。我可以帮你解决任何前端方面的问题。'
+              content: '你叫小明同学，喜欢探索新的前端知识，目前正在学习 AI 大模型。你可以解决任何前端方面的问题。'
             },
             {
               'role': 'user',

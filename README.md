@@ -1,6 +1,6 @@
 # chatgpt-vue3-light-mvp
 
-💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js 语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
+💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
@@ -220,9 +220,10 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 <details>
 <summary>使用本地 Ollama 大模型</summary><br>
 
-**Ollama3 大模型**：
+**Ollama 大模型**：
 - **安装**：Ollama3 不需要 API 密钥，只需要在本地安装并运行 Ollama 即可。请参考 Ollama 官方文档进行安装：[Ollama GitHub](https://github.com/ollama/ollama)
-- **运行**：运行 Ollama3 服务，直接执行 `ollama run llama3`, 运行后确保其在 `http://localhost:11434` 运行
+- **Ollama现已支持的大模型**：[模型列表](https://ollama.com/search)
+- **运行**：运行 Ollama3 服务，直接执行 `ollama run <模型名称>`, 如： `ollama run llama3`, 运行后确保其在 `http://localhost:11434` 运行
 
 ![image](https://github.com/user-attachments/assets/f3955060-a22d-4db8-b162-7393c10403f6)
 
@@ -346,6 +347,8 @@ export const defaultMockModelName = 'standard'
 /**
  * 项目默认使用模型，按需修改此字段即可
  */
+
+// export const defaultModelName = 'spark'
 export const defaultModelName = defaultMockModelName
 ```
 

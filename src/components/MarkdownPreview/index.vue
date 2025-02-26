@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import MarkdownInstance from './plugins/markdown'
+import { renderMarkdownText } from './plugins/markdown'
 
 import type { CrossTransformFunction, TransformFunction } from './models'
 import { defaultMockModelName } from './models'
@@ -39,7 +39,7 @@ const refWrapperContent = ref<HTMLElement>()
 let typingAnimationFrame: number | null = null
 
 const renderedMarkdown = computed(() => {
-  return MarkdownInstance.render(displayText.value)
+  return renderMarkdownText(displayText.value)
 })
 
 
@@ -476,6 +476,10 @@ const emptyPlaceholder = computed(() => {
     & > p {
       margin: 0;
     }
+  }
+
+  .katex {
+    --at-apply: c-primary;
   }
 }
 </style>

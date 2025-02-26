@@ -30,6 +30,7 @@ module.exports = {
     'scss/double-slash-comment-whitespace-inside': 'always',
     'scss/dollar-variable-pattern': null,
 
+    'selector-type-no-unknown': null,
     'selector-pseudo-class-no-unknown': [
       true,
       {

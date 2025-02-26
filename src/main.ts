@@ -5,13 +5,11 @@ import { setupStore } from '@/store'
 
 import App from '@/App.vue'
 
-import InstallGlobalComponents from '@/components'
 
 const app = createApp(App)
 
 function setupPlugins() {
-  app
-    .use(InstallGlobalComponents)
+  // ...
 }
 
 async function setupApp() {
