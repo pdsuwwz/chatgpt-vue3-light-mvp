@@ -481,5 +481,12 @@ const emptyPlaceholder = computed(() => {
   .katex {
     --at-apply: c-primary;
   }
+
+  kbd {
+    --at-apply: inline-block align-middle p-0.1em p-0.3em;
+    --at-apply: bg-#fcfcfc text-#555;
+    --at-apply: border border-solid border-#ccc border-b-#bbb;
+    --at-apply: rounded-0.2em shadow-[inset_0_-1px_0_#bbb] text-0.9em;
+  }
 }
 </style>
