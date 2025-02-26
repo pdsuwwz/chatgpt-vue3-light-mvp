@@ -488,5 +488,25 @@ const emptyPlaceholder = computed(() => {
     --at-apply: border border-solid border-#ccc border-b-#bbb;
     --at-apply: rounded-0.2em shadow-[inset_0_-1px_0_#bbb] text-0.9em;
   }
+
+  table {
+    --at-apply: w-fit border-collapse my-16;
+  }
+
+  th, td {
+    --at-apply: p-7 text-left border border-solid border-#ccc;
+  }
+
+  th {
+    --at-apply: bg-#f2f2f2 font-bold;
+  }
+
+  tr:nth-child(even) {
+    --at-apply: bg-#f9f9f9;
+  }
+
+  tr:hover {
+    --at-apply: bg-#f1f1f1;
+  }
 }
 </style>
