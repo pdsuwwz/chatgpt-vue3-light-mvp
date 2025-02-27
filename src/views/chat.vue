@@ -28,10 +28,6 @@ const modelListSelections = computed(() => {
 })
 
 
-const currentChatId = computed(() => {
-  return route.params.chatId
-})
-
 const loading = ref(true)
 
 setTimeout(() => {
@@ -98,9 +94,8 @@ const handleCreateStylized = async () => {
   stylizingLoading.value = true
   const textContent = inputTextString.value
   inputTextString.value = ''
-  const { error, reader } = await businessStore.createAssistantWriterStylized(currentChatId.value, {
-    text: textContent,
-    writer_oid: currentChatId.value
+  const { error, reader } = await businessStore.createAssistantWriterStylized({
+    text: textContent
   })
 
   if (error) {

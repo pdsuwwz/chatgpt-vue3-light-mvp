@@ -9,14 +9,12 @@ import * as TransformUtils from '@/components/MarkdownPreview/transform'
 import { defaultModelName, modelMappingList } from '@/components/MarkdownPreview/models'
 
 export interface BusinessState {
-  writerList: Array<any>
   systemModelName: string
 }
 
 export const useBusinessStore = defineStore('business-store', {
   state: (): BusinessState => {
     return {
-      writerList: [],
       systemModelName: defaultModelName
     }
   },
@@ -29,7 +27,7 @@ export const useBusinessStore = defineStore('business-store', {
     /**
      * Event Stream 调用大模型接口
      */
-    async createAssistantWriterStylized(writerOid, data): Promise<{error: number
+    async createAssistantWriterStylized(data): Promise<{error: number
       reader: ReadableStreamDefaultReader<string> | null}> {
 
       // 调用当前模型的接口

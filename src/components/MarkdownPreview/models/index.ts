@@ -251,7 +251,7 @@ export const modelMappingList: TypesModelLLM[] = [
         },
         body: JSON.stringify({
           // 集成了大部分模型，可以免费使用
-          'model': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-14B',
+          'model': 'THUDM/glm-4-9b-chat',
           stream: true,
           messages: [
             {

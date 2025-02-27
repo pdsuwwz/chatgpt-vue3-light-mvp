@@ -167,7 +167,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 ### 接口函数修改
 
-请求的函数已经针对目前项目内置的所有模型的响应结果做了统一处理，在（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L36)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L36) 函数，一般情况下，不需要修改此函数，除非遇到极个别模型比较特殊的响应结果格式，需要再额外处理下。
+请求的函数已经针对目前项目内置的所有模型的响应结果做了统一处理，在（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30) 函数，一般情况下，不需要修改此函数，除非遇到极个别模型比较特殊的响应结果格式，需要再额外处理下。
 
 
 ---
@@ -325,7 +325,6 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 export const useBusinessStore = defineStore('business-store', {
   state: (): BusinessState => {
     return {
-      writerList: [],
       systemModelName: defaultModelName
     }
   },
