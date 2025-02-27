@@ -50,7 +50,9 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 
 
-https://github.com/user-attachments/assets/42e8254f-d1bc-42e0-88dd-90279d040ae0
+https://github.com/user-attachments/assets/01063217-13ae-4ecd-b451-5b2e4e954afc
+
+
 
 
 ## 安装和运行
