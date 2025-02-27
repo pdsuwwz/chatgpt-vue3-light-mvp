@@ -154,13 +154,13 @@ export const modelMappingList: TypesModelLLM[] = [
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          // 'model': 'deepseek-r1',
+          // 'model': 'deepseek-r1', // 内置深度思考响应
           'model': 'llama3',
           stream: true,
           messages: [
             {
               role: 'system',
-              content: '全程使用中文回答问题。'
+              content: '你是小O, 全程使用中文回答问题。'
             },
             {
               role: 'user',
@@ -251,7 +251,7 @@ export const modelMappingList: TypesModelLLM[] = [
         },
         body: JSON.stringify({
           // 集成了大部分模型，可以免费使用
-          'model': 'deepseek-ai/DeepSeek-V2.5',
+          'model': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-14B',
           stream: true,
           messages: [
             {

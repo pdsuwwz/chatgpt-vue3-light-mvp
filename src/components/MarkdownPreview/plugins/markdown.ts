@@ -15,6 +15,13 @@ const md = new MarkdownIt({
   typographer: true
 })
 
+md.use(markdownItHighlight, {
+  hljs
+}).use(preWrapperPlugin, {
+  hasSingleTheme: true
+}).use(markdownItKatex)
+
+
 const transformMathMarkdown = (markdownText: string) => {
   const data = splitAtDelimiters(markdownText, [
     {
@@ -38,15 +45,51 @@ const transformMathMarkdown = (markdownText: string) => {
   }, '')
 }
 
+const transformThinkMarkdown = (source: string): string => {
+  let result = ''
+  let buffer = ''
+  let inThinkBlock = false
 
-md.use(markdownItHighlight, {
-  hljs
-}).use(preWrapperPlugin, {
-  hasSingleTheme: true
-}).use(markdownItKatex)
+  const classNameWrapper = 'think-wrapper'
+
+  for (let i = 0; i < source.length; i++) {
+    const char = source[i]
+    const nextChars = source.slice(i, i + 7)
+    const endChars = source.slice(i, i + 8)
+
+    if (!inThinkBlock && nextChars === '<think>') {
+      inThinkBlock = true
+      result += `<div class="${ classNameWrapper }">`
+      i += 6
+      continue
+    }
+
+    if (inThinkBlock && endChars === '</think>') {
+      inThinkBlock = false
+      result += '</div>'
+      i += 7
+      continue
+    }
+
+    if (inThinkBlock) {
+      buffer += char
+    } else {
+      result += char
+    }
+  }
+
+  if (buffer) {
+    const thinkContent = md.render(buffer)
+    result = result.replace(`<div class="${ classNameWrapper }">`, `<div class="${ classNameWrapper }">${ thinkContent }`)
+  }
+
+  return result
+}
+
 
 export const renderMarkdownText = (content: string) => {
-  const transformedContent = transformMathMarkdown(content)
-  return md.render(transformedContent)
+  const thinkTransformed = transformThinkMarkdown(content)
+  const mathTransformed = transformMathMarkdown(thinkTransformed)
+  return md.render(mathTransformed)
 }
 

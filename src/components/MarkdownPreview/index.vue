@@ -508,5 +508,16 @@ const emptyPlaceholder = computed(() => {
   tr:hover {
     --at-apply: bg-#f1f1f1;
   }
+
+  // Deepseek 深度思考 Wrapper
+
+  .think-wrapper {
+    --at-apply: pl-13 text-14 c-#8b8b8b;
+    --at-apply: b-l-2 b-l-solid b-#e5e5e5;
+
+    p {
+      --at-apply: line-height-26;
+    }
+  }
 }
 </style>

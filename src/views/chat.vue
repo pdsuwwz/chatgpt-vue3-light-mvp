@@ -232,8 +232,8 @@ const PromptTag = defineComponent({
 })
 
 const promptTextList = ref([
-  '打个招呼吧，顺便告诉我你的名字',
-  '使用中文，回答以下两个问题，分段表示\n1、你是什么模型？\n2、分别使用 Vue3 setup Composition API 语法糖、React 语法编写一个 Button 组件'
+  '打个招呼吧，并告诉我你的名字',
+  '使用中文，回答以下两个问题，分段表示\n1、你是什么模型？\n2、请分别使用 Vue3 和 React 编写一个 Button 组件，要求在 Vue3 中使用 Setup Composition API 语法糖，在 React 中使用 TSX 语法'
 ])
 
 
