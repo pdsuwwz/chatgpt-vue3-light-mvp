@@ -44,6 +44,10 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 ![image](https://github.com/user-attachments/assets/95b6c478-2522-4b6d-997f-6dabe29cf9d5)
 ![image](https://github.com/user-attachments/assets/4f0b250b-beab-4076-a5a1-d2fe447f0a50)
 
+* Deepseek 深度思考响应结果
+
+![image](https://github.com/user-attachments/assets/9309fafc-c1b7-4cd3-95ed-def1275072b7)
+
 
 
 https://github.com/user-attachments/assets/42e8254f-d1bc-42e0-88dd-90279d040ae0
