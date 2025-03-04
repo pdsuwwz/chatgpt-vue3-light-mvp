@@ -62,7 +62,8 @@
     --at-apply: transition-all-300 opacity-100 z-0;
   }
 
-  pre {
+  pre,
+  li {
 
     code {
       --at-apply: 'bg-#f6f6f7';

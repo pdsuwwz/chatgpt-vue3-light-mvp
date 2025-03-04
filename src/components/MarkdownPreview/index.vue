@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { renderMarkdownText } from './plugins/markdown'
 
 import type { CrossTransformFunction, TransformFunction } from './models'
@@ -42,6 +42,33 @@ const renderedMarkdown = computed(() => {
   return renderMarkdownText(displayText.value)
 })
 
+// 接口响应是否正则排队等待
+const waitingForQueue = ref(false)
+
+const WaitTextRender = defineComponent({
+  render() {
+    return (
+      <n-empty
+        size="large"
+        class="font-bold [&_.n-empty\_\_icon]:flex [&_.n-empty\_\_icon]:justify-center"
+      >
+        {{
+          default: () => (
+            <div
+              whitespace-break-spaces
+              text-center
+            >请求排队处理中，请耐心等待...</div>
+          ),
+          icon: () => (
+            <n-icon class="text-30">
+              <div class="i-svg-spinners:clock"></div>
+            </n-icon>
+          )
+        }}
+      </n-empty>
+    )
+  }
+})
 
 const abortReader = () => {
   if (props.reader) {
@@ -145,7 +172,14 @@ const readTextStream = async () => {
         readIsOver.value = true
         break
       }
-      textBuffer.value += stream.content
+
+      if (stream.isWaitQueuing) {
+        waitingForQueue.value = stream.isWaitQueuing
+      }
+      if (stream.content) {
+        waitingForQueue.value = false
+        textBuffer.value += stream.content
+      }
 
       if (typingAnimationFrame === null) {
         showText()
@@ -345,39 +379,47 @@ const emptyPlaceholder = computed(() => {
           !displayText && 'flex items-center justify-center'
         ]"
       >
-        <n-empty
-          v-if="!displayText"
-          size="large"
-          class="font-bold"
-        >
+        <WaitTextRender
+          v-if="waitingForQueue && !displayText"
+        />
+        <template v-else>
+          <n-empty
+            v-if="!displayText"
+            size="large"
+            class="font-bold"
+          >
+            <div
+              whitespace-break-spaces
+              text-center
+              v-html="emptyPlaceholder"
+            ></div>
+            <template #icon>
+              <n-icon>
+                <div class="i-hugeicons:ai-chat-02"></div>
+              </n-icon>
+            </template>
+          </n-empty>
           <div
-            whitespace-break-spaces
-            text-center
-            v-html="emptyPlaceholder"
-          ></div>
-          <template #icon>
-            <n-icon>
-              <div class="i-hugeicons:ai-chat-02"></div>
-            </n-icon>
-          </template>
-        </n-empty>
-        <div
-          v-else
-          ref="refWrapperContent"
-          text-16
-          class="w-full h-full overflow-y-auto"
-          p-24px
-        >
-          <div
-            class="markdown-wrapper"
-            v-html="renderedContent"
-          ></div>
-          <div
-            v-if="readerLoading"
-            size-24
-            class="i-svg-spinners:pulse-3"
-          ></div>
-        </div>
+            v-else
+            ref="refWrapperContent"
+            text-16
+            class="w-full h-full overflow-y-auto"
+            p-24px
+          >
+            <div
+              class="markdown-wrapper"
+              v-html="renderedContent"
+            ></div>
+            <WaitTextRender
+              v-if="waitingForQueue"
+            />
+            <div
+              v-if="readerLoading"
+              size-24
+              class="i-svg-spinners:pulse-3"
+            ></div>
+          </div>
+        </template>
       </div>
     </div>
   </n-spin>
@@ -426,7 +468,12 @@ const emptyPlaceholder = computed(() => {
   }
 
   li {
-    line-height: 1.5;
+    line-height: 1.7;
+
+    & code {
+      --at-apply: 'bg-#e5e5e5';
+      --at-apply: whitespace-pre m-2px px-6px py-2px rounded-5px;
+    }
   }
 
   ol ol {

@@ -5,43 +5,158 @@ import { sleep } from '@/utils/request'
  * 转义处理响应值为 data: 的 json 字符串
  * 如: 科大讯飞星火、Kimi Moonshot 等大模型的 response
  */
-export const parseJsonLikeData = (content) => {
-  // 若是终止信号，则直接结束
-  if (content === '[DONE]') {
-    return {
-      done: true
-    }
+export const createParser = () => {
+  let keepAliveShown = false
+
+  const resetKeepAliveParser = () => {
+    keepAliveShown = false
   }
 
-  if (content.startsWith('data: ')) {
-    const dataString = content.substring(6).trim()
-    if (dataString === '[DONE]') {
+  const parseJsonLikeData = (content) => {
+
+    // 若是终止信号，则直接结束
+    if (content === '[DONE]') {
+      // 重置 keepAlive 标志
+      keepAliveShown = false
       return {
         done: true
       }
     }
+
+    if (content.startsWith('data: ')) {
+      keepAliveShown = false
+      const dataString = content.substring(6).trim()
+      if (dataString === '[DONE]') {
+        return {
+          done: true
+        }
+      }
+      try {
+        return JSON.parse(dataString)
+      } catch (error) {
+        console.error('JSON 解析错误：', error)
+      }
+    }
+
+    // 尝试直接解析 JSON 字符串
     try {
-      return JSON.parse(dataString)
+      const trimmedContent = content.trim()
+
+      if (trimmedContent === ': keep-alive') {
+        // 如果还没有显示过 keep-alive 提示，则显示
+        if (!keepAliveShown) {
+          keepAliveShown = true
+          return {
+            isWaitQueuing: true
+          }
+        } else {
+          return null
+        }
+      }
+
+      if (!trimmedContent) {
+        return null
+      }
+
+      if (trimmedContent.startsWith('{') && trimmedContent.endsWith('}')) {
+        return JSON.parse(trimmedContent)
+      }
+      if (trimmedContent.startsWith('[') && trimmedContent.endsWith(']')) {
+        return JSON.parse(trimmedContent)
+      }
     } catch (error) {
-      console.error('JSON 解析错误：', error)
+      console.error('尝试直接解析 JSON 失败：', error)
     }
-  }
 
-  // 尝试直接解析 JSON 字符串
-  try {
-    const trimmedContent = content.trim()
-    if (trimmedContent.startsWith('{') && trimmedContent.endsWith('}')) {
-      return JSON.parse(trimmedContent)
-    }
-    if (trimmedContent.startsWith('[') && trimmedContent.endsWith(']')) {
-      return JSON.parse(trimmedContent)
-    }
-  } catch (error) {
-    console.error('尝试直接解析 JSON 失败：', error)
+    return null
   }
-
-  return null
+  return {
+    resetKeepAliveParser,
+    parseJsonLikeData
+  }
 }
+
+export const createStreamThinkTransformer = () => {
+  let isThinking = false
+
+  const resetThinkTransformer = () => {
+    isThinking = false
+  }
+
+  const transformStreamThinkData = (content) => {
+    const stream = parseJsonLikeData(content)
+
+    if (stream && stream.done) {
+      return {
+        done: true
+      }
+    }
+
+    // DeepSeek 存在限速问题，这里做一个简单处理
+    // https://api-docs.deepseek.com/zh-cn/quick_start/rate_limit
+    if (stream && stream.isWaitQueuing) {
+      return {
+        isWaitQueuing: stream.isWaitQueuing
+      }
+    }
+
+    if (!stream || !stream.choices || stream.choices.length === 0) {
+      return {
+        content: ''
+      }
+    }
+
+    const delta = stream.choices[0].delta
+    const contentText = delta.content || ''
+    const reasoningText = delta.reasoning_content || ''
+
+    let transformedContent = ''
+
+    // 开始处理推理过程
+    if (delta.content === null && delta.reasoning_content !== null) {
+      if (!isThinking) {
+        transformedContent += '<think>'
+        isThinking = true
+      }
+      transformedContent += reasoningText
+    }
+    // 当 content 出现时，说明推理结束
+    else if (delta.content !== null && delta.reasoning_content === null) {
+      if (isThinking) {
+        transformedContent += '</think>\n\n'
+        isThinking = false
+      }
+      transformedContent += contentText
+    }
+    // 当为普通模型，即不包含推理字段时，直接追加 content
+    else if (delta.content !== null && delta.reasoning_content === undefined) {
+      isThinking = false
+      transformedContent += contentText
+    }
+
+    return {
+      content: transformedContent
+    }
+  }
+
+  return {
+    resetThinkTransformer,
+    transformStreamThinkData
+  }
+}
+
+const { resetKeepAliveParser, parseJsonLikeData } = createParser()
+const { resetThinkTransformer, transformStreamThinkData } = createStreamThinkTransformer()
+
+
+/**
+ * 处理大模型调用暂停、异常或结束后触发的操作
+ */
+export const triggerModelTermination = () => {
+  resetKeepAliveParser()
+  resetThinkTransformer()
+}
+
 type ContentResult = {
   content: any
 } | {
@@ -50,6 +165,7 @@ type ContentResult = {
 
 type DoneResult = {
   content: any
+  isWaitQueuing?: any
 } & {
   done: boolean
 }
@@ -125,6 +241,104 @@ export const modelMappingList: TypesModelLLM[] = [
     }
   },
   {
+    label: '🐋 DeepSeek-V3',
+    modelName: 'deepseek-v3',
+    transformStreamValue(readValue) {
+      const stream = transformStreamThinkData(readValue)
+      if (stream.done) {
+        return {
+          done: true
+        }
+      }
+      if (stream.isWaitQueuing) {
+        return {
+          isWaitQueuing: stream.isWaitQueuing
+        }
+      }
+      return {
+        content: stream.content
+      }
+    },
+    // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
+    chatFetch(text) {
+      const url = new URL(`${ location.origin }/deepseek/chat/completions`)
+      const params = {
+      }
+      Object.keys(params).forEach(key => {
+        url.searchParams.append(key, params[key])
+      })
+
+      const req = new Request(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ import.meta.env.VITE_DEEPSEEK_KEY }`
+        },
+        body: JSON.stringify({
+          // 普通模型 V3
+          'model': 'deepseek-chat',
+          stream: true,
+          messages: [
+            {
+              'role': 'user',
+              'content': text
+            }
+          ]
+        })
+      })
+      return fetch(req)
+    }
+  },
+  {
+    label: '🐋 DeepSeek-R1 (推理模型)',
+    modelName: 'deepseek-deep',
+    transformStreamValue(readValue) {
+      const stream = transformStreamThinkData(readValue)
+      if (stream.done) {
+        return {
+          done: true
+        }
+      }
+      if (stream.isWaitQueuing) {
+        return {
+          isWaitQueuing: stream.isWaitQueuing
+        }
+      }
+      return {
+        content: stream.content
+      }
+    },
+    // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
+    chatFetch(text) {
+      const url = new URL(`${ location.origin }/deepseek/chat/completions`)
+      const params = {
+      }
+      Object.keys(params).forEach(key => {
+        url.searchParams.append(key, params[key])
+      })
+
+      const req = new Request(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ import.meta.env.VITE_DEEPSEEK_KEY }`
+        },
+        body: JSON.stringify({
+          // 推理模型
+          'model': 'deepseek-reasoner',
+          stream: true,
+          messages: [
+            {
+              'role': 'user',
+              'content': text
+            }
+          ]
+        })
+      })
+      return fetch(req)
+    }
+  },
+  {
     label: '🦙 Ollama 3 大模型',
     modelName: 'ollama3',
     transformStreamValue(readValue) {
@@ -160,7 +374,7 @@ export const modelMappingList: TypesModelLLM[] = [
           messages: [
             {
               role: 'system',
-              content: '你是小O, 全程使用中文回答问题。'
+              content: '你的名字叫做小O, 全程使用中文回答我的问题。'
             },
             {
               role: 'user',
@@ -173,7 +387,7 @@ export const modelMappingList: TypesModelLLM[] = [
     }
   },
   {
-    label: '🌐 Spark 星火大模型',
+    label: '⚡ Spark 星火大模型',
     modelName: 'spark',
     transformStreamValue(readValue) {
       const stream = parseJsonLikeData(readValue)
@@ -220,10 +434,9 @@ export const modelMappingList: TypesModelLLM[] = [
     }
   },
   {
-    label: '🌐 SiliconFlow 硅基流动大模型',
+    label: '⚡ SiliconFlow 硅基流动大模型',
     modelName: 'siliconflow',
     transformStreamValue(readValue) {
-      // 与 spark 类似，直接复制
       const stream = parseJsonLikeData(readValue)
       if (stream.done) {
         return {
@@ -265,10 +478,9 @@ export const modelMappingList: TypesModelLLM[] = [
     }
   },
   {
-    label: '🌐 Kimi Moonshot 月之暗面大模型',
+    label: '⚡ Kimi Moonshot 月之暗面大模型',
     modelName: 'moonshot',
     transformStreamValue(readValue) {
-      // 与 spark 类似，直接复制
       const stream = parseJsonLikeData(readValue)
       if (stream.done) {
         return {

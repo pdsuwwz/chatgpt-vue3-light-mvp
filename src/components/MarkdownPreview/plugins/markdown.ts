@@ -52,6 +52,18 @@ const transformThinkMarkdown = (source: string): string => {
 
   const classNameWrapper = 'think-wrapper'
 
+  // 转义 <think/> 中的 <script/>
+  const escapeScriptTags = (content: string): string => {
+    // <script> 或 <script ...>
+    let escaped = content.replace(/<script([^>]*)>/gi, '&lt;script$1&gt;')
+    // </script>
+    escaped = escaped.replace(/<\/script>/gi, '&lt;/script&gt;')
+    // <script ... />
+    escaped = escaped.replace(/<script([^>]*)\s*\/>/gi, '&lt;script$1 /&gt;')
+
+    return escaped
+  }
+
   for (let i = 0; i < source.length; i++) {
     const char = source[i]
     const nextChars = source.slice(i, i + 7)
@@ -79,7 +91,9 @@ const transformThinkMarkdown = (source: string): string => {
   }
 
   if (buffer) {
-    const thinkContent = md.render(buffer)
+    const escapedBuffer = escapeScriptTags(buffer)
+    const thinkContent = md.render(escapedBuffer)
+
     result = result.replace(`<div class="${ classNameWrapper }">`, `<div class="${ classNameWrapper }">${ thinkContent }`)
   }
 

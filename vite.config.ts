@@ -38,6 +38,12 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(/^\/moonshot/, '')
+        },
+        '/deepseek': {
+          target: 'https://api.deepseek.com',
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/deepseek/, '')
         }
       }
     },

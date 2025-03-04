@@ -25,11 +25,13 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 | 模型名称 | 模型标识符 | 需要 API Key | 可否本地运行 | 备注 |
 |----------|----------|----------|----------|----------|
-| （默认类型）模拟数据模型 | `standard` | × | √ | 开发环境默认使用 |
-| Ollama (Llama 3) 大模型 | `ollama3` | × | √ | 需本地安装运行 Ollama 服务 |
-| Spark 星火大模型 | `spark` | √ | × | 需配置 `VITE_SPARK_KEY` |
-| SiliconFlow 硅基流动大模型 | `siliconflow` | √ | × | 需配置 `VITE_SILICONFLOW_KEY` |
-| Kimi Moonshot 月之暗面大模型 | `moonshot` | √ | × | 需配置 `VITE_MOONSHOT_KEY` |
+| （默认类型）模拟数据模型 | `standard` | × | ✅ | 开发环境默认使用 |
+| Ollama (Llama 3) 大模型 | `ollama3` | × | ✅ | 需本地安装运行 Ollama 服务 |
+| DeepSeek-V3 | `deepseek-v3` | ✅ | × | 需配置 `VITE_DEEPSEEK_KEY` |
+| DeepSeek-R1 (推理模型) | `deepseek-deep` | ✅ | × | 需配置 `VITE_DEEPSEEK_KEY` |
+| Spark 星火大模型 | `spark` | ✅ | × | 需配置 `VITE_SPARK_KEY` |
+| SiliconFlow 硅基流动大模型 | `siliconflow` | ✅ | × | 需配置 `VITE_SILICONFLOW_KEY` |
+| Kimi Moonshot 月之暗面大模型 | `moonshot` | ✅ | × | 需配置 `VITE_MOONSHOT_KEY` |
 
 
 ## 前置条件
@@ -87,6 +89,7 @@ pnpm dev
   VITE_SPARK_KEY=你的_星火_API_Key # 需要用冒号拼接key和secret，格式如 `key123456:secret123456`
   VITE_SILICONFLOW_KEY=你的_SiliconFlow_API_Key # 通常以 `sk-` 开头，如 `sk-xxxxxx`
   VITE_MOONSHOT_KEY=你的_Moonshot_API_Key # 通常以 `sk-` 开头，如 `sk-xxxxxx`
+  VITE_DEEPSEEK_KEY=你的_DeepSeek_API_Key # 通常以 `sk-` 开头，如 `sk-xxxxxx`
   ```
 
 
@@ -94,7 +97,7 @@ pnpm dev
 
 本项目采用纯前端架构，所有后端服务均由外部或本地其他服务提供。为解决开发环境中的跨域问题，项目使用了 `Vite` 的代理功能 `server.proxy`（详见[官方文档](https://vite.dev/config/server-options.html#server-proxy)）
 
-以下是当前仓库的[代理配置](./vite.config.ts#L21)
+以下是当前仓库的[代理配置](./vite.config.ts#L23)
 
 ```ts
 server: {
@@ -117,6 +120,12 @@ server: {
       changeOrigin: true,
       ws: true,
       rewrite: (path) => path.replace(/^\/moonshot/, '')
+    },
+    '/deepseek': {
+      target: 'https://api.deepseek.com',
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(/^\/deepseek/, '')
     }
   }
 },
@@ -155,7 +164,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 默认情况下，在开发环境，`isGithubDeployed` 会被设置为 `false`, 这意味着应用将默认使用模拟数据，但也可按照需求自行切换其他大模型 API 接口。
 
-当部署在演示环境时，也就是本项目在线预览地址中，则使用 `hash` 路由模式, `isGithubDeployed` 会被设置为 `true`, 这意味着应用将使用模拟数据而不是真实的大模型 API 接口。
+当部署在演示环境时，也就是本项目在线预览地址中，则使用 `hash` 路由模式, `isGithubDeployed` 会被设置为 `true`, 这意味着真实的大模型 API 接口将被禁用。
 
 ### 切换至真实 API
 
@@ -180,7 +189,25 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 <summary>国内在线大模型配置</summary><br>
 
 
-**1. Spark 星火认知大模型**：
+**1. DeepSeek 深度求索大模型**：
+- **官方开放平台**：访问 [DeepSeek 官方文档](https://api-docs.deepseek.com/zh-cn) 查看使用手册
+- **注册**：访问 [DeepSeek 开放平台控制台](https://platform.deepseek.com/usage) 进行注册登录
+- **模型 & 价格**：访问 [模型 & 价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing) 查看模型价格
+- **Token 购买**：访问 [账户信息 - Top up 管理](https://platform.deepseek.com/top_up) 请按需购买 API 所需 Token（一般 10 块就够了，能用好久）
+- **创建 API 密钥**：访问 [账户信息 - API Key 管理](https://platform.deepseek.com/api_keys) 新建 API 密钥
+
+![image](https://github.com/user-attachments/assets/f3ad036f-9938-4ff5-b301-7ca645346517)
+
+- **接口说明**：[首次调用 API](https://api-docs.deepseek.com/zh-cn)
+- **在线调试**：[官方 Chat Completions 在线调试](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion)
+- **配置到本仓库**：将创建的 API 密钥填入 `.env` 文件中的 `VITE_DEEPSEEK_KEY` 环境变量
+- **DeepSeek 现已支持的大模型**：[模型 & 价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)
+- **DeepSeek 现已支持的大模型-接口调用查看**：[通过接口查看](https://api-docs.deepseek.com/zh-cn/api/list-models)
+
+![image](https://github.com/user-attachments/assets/8aa98691-94ac-4516-a9c4-18ac2da92c01)
+
+
+**2. Spark 星火认知大模型**：
 
 - **注册**：访问 [星火大模型 API](https://xinghuo.xfyun.cn/sparkapi) 进行注册并登录
 - **获取 API 密钥**：访问 [控制台](https://console.xfyun.cn/services/bm4) 获取 `APIKey` 和 `APISecret`
@@ -194,7 +221,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 - **配置到本仓库**：将创建的 `APIKey` 和 `APISecret` 密钥用冒号 `:` 拼接填入到 `.env` 文件中的 `VITE_SPARK_KEY` 环境变量
 
 
-**2. SiliconFlow 大模型**：
+**3. SiliconFlow 大模型**：
 - **注册**：访问 [SiliconFlow 官网](https://siliconflow.cn/zh-cn/siliconcloud) 进行注册登录并创建 API 密钥
 - **创建 API 密钥**：访问 [账户管理 - API 密钥](https://cloud.siliconflow.cn/account/ak) 创建新 API 密钥
 
@@ -207,7 +234,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 ![image](https://github.com/user-attachments/assets/f320f495-cb17-48ff-99c4-aaedbf87fc84)
 
 
-**3. Kimi Moonshot 月之暗面大模型**：
+**4. Kimi Moonshot 月之暗面大模型**：
 - **官方开放平台**：访问 [Moonshot 开放平台](https://platform.moonshot.cn/docs/intro) 查看使用手册
 - **注册**：访问 [Moonshot 开放平台控制台](https://platform.moonshot.cn/console) 进行注册登录
 - **创建 API 密钥**：访问 [账户信息 - API Key 管理](https://platform.moonshot.cn/console/api-keys) 新建 API 密钥
@@ -291,17 +318,19 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 | 模型名称 | 模型标识符 | 需要 API Key | 可否本地运行 | 备注 |
 |----------|----------|----------|----------|----------|
-| （默认类型）模拟数据模型 | `standard` | × | √ | 开发环境默认使用 |
-| Ollama (Llama 3) 大模型 | `ollama3` | × | √ | 需本地安装运行 Ollama 服务 |
-| Spark 星火大模型 | `spark` | √ | × | 需配置 `VITE_SPARK_KEY` |
-| SiliconFlow 硅基流动大模型 | `siliconflow` | √ | × | 需配置 `VITE_SILICONFLOW_KEY` |
-| Kimi Moonshot 月之暗面大模型 | `moonshot` | √ | × | 需配置 `VITE_MOONSHOT_KEY` |
+| （默认类型）模拟数据模型 | `standard` | × | ✅ | 开发环境默认使用 |
+| Ollama (Llama 3) 大模型 | `ollama3` | × | ✅ | 需本地安装运行 Ollama 服务 |
+| DeepSeek-V3 | `deepseek-v3` | ✅ | × | 需配置 `VITE_DEEPSEEK_KEY` |
+| DeepSeek-R1 (推理模型) | `deepseek-deep` | ✅ | × | 需配置 `VITE_DEEPSEEK_KEY` |
+| Spark 星火大模型 | `spark` | ✅ | × | 需配置 `VITE_SPARK_KEY` |
+| SiliconFlow 硅基流动大模型 | `siliconflow` | ✅ | × | 需配置 `VITE_SILICONFLOW_KEY` |
+| Kimi Moonshot 月之暗面大模型 | `moonshot` | ✅ | × | 需配置 `VITE_MOONSHOT_KEY` |
 
 
 ### 🔬 主要实现
 
-- **modelMappingList**: 定义了支持的每个大模型的 modelName, 响应结果的处理以及请求 API 函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L85)
-  - **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L85)
+- **modelMappingList**: 定义了支持的每个大模型的 modelName, 响应结果的处理以及请求 API 函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L199)
+  - **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L199)
 - **MarkdownPreview 组件**: 接收 `model` 和 `transformStreamFn` props 属性，根据不同模型类型处理流式响应，[详见代码](src/components/MarkdownPreview/index.vue#L9)
 
 > 本项目的 `MarkdownPreview` 组件接收 `model` props 属性是为了回显不同的 `Placeholder`，如果你不需要可直接删掉该 props 参数及对应的回显逻辑
@@ -321,7 +350,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 />
 ```
 
-其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L18) 状态管理来管控：
+其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L22) 状态管理来管控：
 
 ```ts
 export const useBusinessStore = defineStore('business-store', {
@@ -341,7 +370,7 @@ export const useBusinessStore = defineStore('business-store', {
 })
 ```
 
-在模拟开发环境下，默认使用 `standard` 模型，同时也可以自定义修改为指定模型（尝试基于本项目二次开发的话，可以重点看下这个文件 [models/index.ts](src/components/MarkdownPreview/models/index.ts)），具体的模型类型可以根据需求进行自己二次配置:
+在模拟开发环境下，默认使用 `standard` 模型，同时也可以自定义修改为指定模型（尝试基于本项目二次开发的话，可以重点看下这个文件 [models/index.ts](src/components/MarkdownPreview/models/index.ts#L190)），具体的模型类型可以根据需求进行自己二次配置:
 
 ```ts
 /**

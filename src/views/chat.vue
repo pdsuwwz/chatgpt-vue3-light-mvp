@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import { defaultMockModelName, modelMappingList } from '@/components/MarkdownPreview/models'
+import { defaultMockModelName, modelMappingList, triggerModelTermination } from '@/components/MarkdownPreview/models'
 import { type InputInst } from 'naive-ui'
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface'
 import { isGithubDeployed } from '@/config'
@@ -63,6 +63,7 @@ const onFailedReader = () => {
       refInputTextString.value.focus()
     }
   })
+  triggerModelTermination()
 }
 const onCompletedReader = () => {
   stylizingLoading.value = false
@@ -71,6 +72,7 @@ const onCompletedReader = () => {
       refInputTextString.value.focus()
     }
   })
+  triggerModelTermination()
 }
 
 const handleCreateStylized = async () => {
@@ -260,6 +262,7 @@ const promptTextList = ref([
                   v-model:value="businessStore.systemModelName"
                   class="w-280 pr-10 font-italic font-bold"
                   placeholder="请选择模型"
+                  :disabled="stylizingLoading"
                   :options="modelListSelections"
                 />
                 <CustomTooltip
