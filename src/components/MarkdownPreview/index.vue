@@ -470,7 +470,7 @@ const emptyPlaceholder = computed(() => {
   li {
     line-height: 1.7;
 
-    & code {
+    & > code {
       --at-apply: 'bg-#e5e5e5';
       --at-apply: whitespace-pre m-2px px-6px py-2px rounded-5px;
     }

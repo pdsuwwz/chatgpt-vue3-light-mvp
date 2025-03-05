@@ -398,9 +398,21 @@ export const defaultModelName = defaultMockModelName
 如果你喜欢这个项目或发现有用，可以点右上角 [`Star`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp) 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
 
 
-## 😎 Awesome
+## 🌟 相关项目
 
-* [awesome-vite](https://github.com/pdsuwwz/awesome-vite)
+以下是一些开发者和团队正在使用、参考或受本项目启发的项目：
+
+| 项目名                                                | 简介                                                                                          |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [大模型数据助手](https://github.com/apconw/sanic-web) | 一个轻量级的开源大模型应用项目，支持多模型适配、数据问答和 RAG 检索，旨在简化大模型应用开发。 |
+
+### 📢 社区贡献
+
+💡 如果您的项目也在使用或借鉴了本项目，我们诚挚欢迎您：
+
+- 通过提交 [Issue](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/issues) 分享您的项目链接
+- 提交 Pull Request (PR) 将您的项目添加到列表中
+
 
 ## License
 
