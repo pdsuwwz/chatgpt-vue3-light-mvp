@@ -1,5 +1,10 @@
 # chatgpt-vue3-light-mvp
 
+[![Deploy](https://img.shields.io/badge/passing-black?style=flat&logo=Netlify&label=Netlify&color=3bb92c&labelColor=black)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/deployments)
+[![GitHub Workflow Status (branch)](https://img.shields.io/badge/passing-black?style=flat&label=build&color=3bb92c)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/deployments/Production)
+[![thanks](https://badgen.net/badge/thanks/♥/pink)](https://github.com/pdsuwwz)
+[![License](https://img.shields.io/github/license/pdsuwwz/chatgpt-vue3-light-mvp?color=466fe8)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/LICENSE)
+
 💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
