@@ -123,20 +123,23 @@ const isMacos = computed(() => {
   const os = parser.getOS()
   if (!os) return
 
-  return os.name?.includes?.('macos')
+  const osName = os.name ?? ''
+  return osName
+    .toLocaleLowerCase()
+    .includes?.('macos')
 })
 
 const placeholder = computed(() => {
   if (stylizingLoading.value) {
     return `输入任意问题...`
   }
-  return `输入任意问题, 按 ${ isMacos ? 'Command' : 'Ctrl' } + Enter 键快捷开始...`
+  return `输入任意问题, 按 ${ isMacos.value ? 'Command' : 'Ctrl' } + Enter 键快捷开始...`
 })
 
 watch(
   () => enterCommand.value,
   () => {
-    if (!isMacos || notUsingInput.value) return
+    if (!isMacos.value || notUsingInput.value) return
 
     if (stylizingLoading.value) return
 
@@ -152,7 +155,7 @@ watch(
 watch(
   () => enterCtrl.value,
   () => {
-    if (isMacos || notUsingInput.value) return
+    if (isMacos.value || notUsingInput.value) return
 
     if (stylizingLoading.value) return
 
