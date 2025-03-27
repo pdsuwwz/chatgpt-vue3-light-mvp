@@ -5,7 +5,7 @@
 [![thanks](https://badgen.net/badge/thanks/♥/pink)](https://github.com/pdsuwwz)
 [![License](https://img.shields.io/github/license/pdsuwwz/chatgpt-vue3-light-mvp?color=466fe8)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/LICENSE)
 
-💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
+💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式, Mermaid 图表语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
@@ -23,9 +23,10 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 * 🌟 **图标支持**：内置 **UnoCSS + Iconify**，实现原子化样式内联和图标按需自动导入
 * 💬 **AI 对话**：支持单轮对话，用户输入即得 AI 独立响应回复，无需上下文
 * 📝 **Markdown 预览**：支持多种编程语言代码高亮，集成 `markdown-it` 和 `highlight.js`
+* 📊 **可视化支持**：内置 `Mermaid` 解析，轻松绘制流程图和时序图等；支持 KaTex/LaTeX 数学公式渲染，助力技术文档编写
 * 🧪 **模拟开发模式**：提供本地模拟开发模式，无需真实 API 即可开始开发
 * 🔑 **环境变量管理**：通过 `.env` 文件管理 API 密钥，支持不同大模型的配置
-* 🌍 **大语言模型 API**：兼容 Spark 星火认知大模型、Kimi Moonshot 月之暗面大模型、SiliconFlow、Ollama 等，允许自由扩展
+* 🌍 **大语言模型 API**：兼容 Deepseek V3/R1, Spark 星火认知大模型、Kimi Moonshot 月之暗面大模型、SiliconFlow、Ollama 等，允许自由扩展
 * 🚀 **灵活扩展**：轻量级模块化 MVP 设计，纯前端开发，项目结构清晰，快速搭建 AI 对话原型
 
 ### 🧠 已支持的模型

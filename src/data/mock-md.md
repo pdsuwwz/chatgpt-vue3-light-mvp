@@ -100,6 +100,43 @@ button:hover {
 - **实际应用**: 可以根据项目需求，对该组件进行扩展和修改，应用到实际项目中。
 
 
+## 公式示例
+
+* 纳维-斯托克斯方程
+
+$$
+\rho\left(\frac{\partial \vec{u}}{\partial t} + \vec{u} \cdot \nabla\vec{u}\right) = -\nabla p + \nabla \cdot \left[\mu\left(\nabla\vec{u} + (\nabla\vec{u})^T\right)\right] + \vec{f}
+$$
+
+* 薛定谔波动方程
+
+$$
+i\hbar\frac{\partial \psi(\vec{r},t)}{\partial t} = \left[-\frac{\hbar^2}{2m}\nabla^2 + V(\vec{r},t)\right]\psi(\vec{r},t)
+$$
+
+* 薛定谔化学键积分方程
+
+$$
+H\Psi = E\Psi, \quad H = -\frac{\hbar^2}{2m}\sum_{i}\nabla_i^2 - \sum_{i,I}\frac{Z_I}{r_{iI}} + \sum_{i<j}\frac{1}{r_{ij}}
+$$
+
+* DNA 蛋白质转录翻译综合模型
+
+$$
+\frac{d[mRNA]}{dt} = k_s \cdot \frac{[DNA]_{active}}{K_M + [DNA]_{active}} - k_d \cdot [mRNA]
+$$
+
+
+## Mermaid 示例
+
+```mermaid
+graph LR
+    A[方形矩形] -- 连接文本 --> B((圆形))
+    A --> C(圆角矩形)
+    B --> D{菱形}
+    C --> D
+```
+
 **如果您有其他问题或需要进一步的帮助，请随时告知！**
 
 ## 🌹 说明

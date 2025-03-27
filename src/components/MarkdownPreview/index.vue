@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import { renderMarkdownText } from './plugins/markdown'
+import { renderMarkdownText, renderMermaidProcess } from './plugins/markdown'
 
 import type { CrossTransformFunction, TransformFunction } from './models'
 import { defaultMockModelName } from './models'
@@ -42,7 +42,7 @@ const renderedMarkdown = computed(() => {
   return renderMarkdownText(displayText.value)
 })
 
-// 接口响应是否正则排队等待
+// 接口响应是否正在排队等待
 const waitingForQueue = ref(false)
 
 const WaitTextRender = defineComponent({
@@ -241,11 +241,13 @@ const showText = () => {
   // 若 reader 还没结束，则保持打字行为
   if (!readIsOver.value) {
     runReadBuffer()
+    renderMermaidProcess()
     typingAnimationFrame = requestAnimationFrame(showText)
   } else {
     // 读取剩余的 buffer
     runReadBuffer(
       () => {
+        renderMermaidProcess()
         typingAnimationFrame = requestAnimationFrame(showText)
       },
       () => {
@@ -566,5 +568,11 @@ const emptyPlaceholder = computed(() => {
       --at-apply: line-height-26;
     }
   }
+
+  .mermaid {
+    contain: layout;
+    transform: translateZ(0);
+  }
+
 }
 </style>

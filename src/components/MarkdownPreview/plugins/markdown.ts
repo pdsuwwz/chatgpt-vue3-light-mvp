@@ -9,6 +9,8 @@ import splitAtDelimiters from 'katex/contrib/auto-render/splitAtDelimiters'
 import 'katex/dist/katex.min.css'
 import 'katex/dist/contrib/mhchem.min.js'
 
+import { mermaidPlugin, processMermaid } from './mermaid'
+
 const md = new MarkdownIt({
   html: true,
   linkify: true,
@@ -17,10 +19,20 @@ const md = new MarkdownIt({
 
 md.use(markdownItHighlight, {
   hljs
-}).use(preWrapperPlugin, {
-  hasSingleTheme: true
-}).use(markdownItKatex)
+})
+  .use(preWrapperPlugin, {
+    hasSingleTheme: true
+  })
+  .use(markdownItKatex)
+  .use(mermaidPlugin)
 
+
+const transformMermaid = (content: string): string => {
+  const mermaidBlockRegex = /^```mermaid\n([\s\S]*?)\n```$/gm
+  return content.replace(mermaidBlockRegex, (match) => {
+    return match
+  })
+}
 
 const transformMathMarkdown = (markdownText: string) => {
   const data = splitAtDelimiters(markdownText, [
@@ -104,6 +116,15 @@ const transformThinkMarkdown = (source: string): string => {
 export const renderMarkdownText = (content: string) => {
   const thinkTransformed = transformThinkMarkdown(content)
   const mathTransformed = transformMathMarkdown(thinkTransformed)
-  return md.render(mathTransformed)
+  const mermaidTransformed = transformMermaid(mathTransformed)
+  return md.render(mermaidTransformed)
 }
 
+const debounceRenderMermaid = _.debounce(() => {
+  processMermaid.fn()
+}, 10)
+
+// 触发 Mermaid 渲染
+export const renderMermaidProcess = () => {
+  debounceRenderMermaid()
+}
