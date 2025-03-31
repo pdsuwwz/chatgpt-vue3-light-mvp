@@ -78,11 +78,11 @@ export const mermaidPlugin = (md, options = {}) => {
       if (cache.has(hash)) {
         svg = cache.get(hash)
       } else {
-        const { isValid } = await verifyMermaid(content)
+        // const { isValid } = await verifyMermaid(content)
 
-        if (!isValid) {
-          return
-        }
+        // if (!isValid) {
+        //   return
+        // }
 
         // 使用唯一 ID 渲染（避免图表冲突）
         const { svg: renderedSvg } = await mermaid.render(`mermaid-${ hash }`, content)
@@ -120,14 +120,16 @@ export const mermaidPlugin = (md, options = {}) => {
       if (container.dataset.mermaidStatus !== 'pending') {
         container.dataset.mermaidStatus = 'pending'
       }
-      renderMermaid(container)
+      nextTick(() => {
+        renderMermaid(container)
+      })
     })
   }
 
   // 初始化 Mermaid
   mermaid.initialize({
     startOnLoad: false,
-    securityLevel: 'antiscript',
+    securityLevel: 'loose',
     markdownAutoWrap: true,
     suppressErrorRendering: true,
     ...options
@@ -135,7 +137,7 @@ export const mermaidPlugin = (md, options = {}) => {
 
   // 触发 Mermaid 图表渲染 export
   processMermaid.fn = () => {
-    requestAnimationFrame(processContainers)
+    processContainers()
   }
 }
 
