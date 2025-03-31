@@ -129,12 +129,70 @@ $$
 
 ## Mermaid 示例
 
+* 流程图示例
+
 ```mermaid
 graph LR
     A[方形矩形] -- 连接文本 --> B((圆形))
     A --> C(圆角矩形)
     B --> D{菱形}
     C --> D
+```
+
+* 甘特图示例
+
+```mermaid
+gantt
+    title 开发进度
+    dateFormat YYYY-MM-DD
+    section 需求分析
+    需求收集      :done,    2025-03-20, 3d
+    需求评审      :active,  2025-03-23, 2d
+    section 开发阶段
+    设计架构      :         2025-03-25, 3d
+    编码开发      :         2025-03-28, 5d
+    section 测试阶段
+    单元测试      :         2025-04-02, 3d
+    系统测试      :         2025-04-05, 3d
+    section 交付上线
+    部署上线      :         2025-04-08, 1d
+```
+
+* 饼图示例
+
+```mermaid
+pie
+    title 文件类型分布
+    "Excel 文件": 45
+    "CSV 文件": 30
+    "JSON 文件": 15
+    "其他": 10
+```
+
+* Git 分支图示例
+
+```mermaid
+gitGraph
+    commit id: "初始化"
+    branch develop
+    commit id: "开发新功能A"
+    commit id: "修复Bug"
+    checkout main
+    merge develop
+    commit id: "发布版本v1.0"
+```
+
+* 序列图示例
+
+```mermaid
+sequenceDiagram
+    participant 用户
+    participant 前端
+    participant 后端
+    用户->>前端: 输入用户名和密码
+    前端->>后端: 发送登录请求
+    后端-->>前端: 验证成功，返回 Token
+    前端-->>用户: 显示登录成功
 ```
 
 **如果您有其他问题或需要进一步的帮助，请随时告知！**

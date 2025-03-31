@@ -49,10 +49,13 @@ export const mermaidPlugin = (md, options = {}) => {
     }
 
     return `
-      <div data-mermaid-hash="${ hash }"
-           data-mermaid-content="${ encodedContent }"
-           data-mermaid-status="pending">
-        <pre>${ md.utils.escapeHtml(content) }</pre>
+      <div
+        data-mermaid-hash="${ hash }"
+        data-mermaid-content="${ encodedContent }"
+        data-mermaid-status="pending"
+        class="mermaid-wrapper"
+      >
+        <pre>⏳ Mermaid 流程图正在加载，请稍候...</pre>
       </div>
     `
   }

@@ -235,22 +235,23 @@ const showText = () => {
     cancelAnimationFrame(typingAnimationFrame)
     typingAnimationFrame = null
     readerLoading.value = false
+    renderMermaidProcess()
     return
   }
 
   // 若 reader 还没结束，则保持打字行为
   if (!readIsOver.value) {
     runReadBuffer()
-    renderMermaidProcess()
     typingAnimationFrame = requestAnimationFrame(showText)
   } else {
     // 读取剩余的 buffer
     runReadBuffer(
       () => {
-        renderMermaidProcess()
         typingAnimationFrame = requestAnimationFrame(showText)
       },
       () => {
+        renderMermaidProcess()
+
         window.$ModalNotification.success({
           title: '生成完毕',
           duration: 1500
@@ -569,10 +570,24 @@ const emptyPlaceholder = computed(() => {
     }
   }
 
-  .mermaid {
+  .mermaid-wrapper {
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    margin: 16px 0;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+    overflow: auto;
     contain: layout;
     transform: translateZ(0);
-  }
 
+    pre {
+      font-size: 14px;
+      color: #64748b;
+      font-family: monospace;
+      margin: 0;
+    }
+
+  }
 }
 </style>
