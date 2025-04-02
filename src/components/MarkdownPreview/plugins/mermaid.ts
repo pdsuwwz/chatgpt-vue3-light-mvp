@@ -78,11 +78,15 @@ export const mermaidPlugin = (md, options = {}) => {
       if (cache.has(hash)) {
         svg = cache.get(hash)
       } else {
-        // const { isValid } = await verifyMermaid(content)
 
-        // if (!isValid) {
-        //   return
-        // }
+        const { isValid } = await verifyMermaid(content)
+
+        if (!isValid) {
+          cache.set(hash, content)
+          container.dataset.mermaidStatus = 'error'
+          container.innerHTML = `<pre>渲染失败：\n${ content }\n</pre>`
+          return
+        }
 
         // 使用唯一 ID 渲染（避免图表冲突）
         const { svg: renderedSvg } = await mermaid.render(`mermaid-${ hash }`, content)
@@ -97,8 +101,9 @@ export const mermaidPlugin = (md, options = {}) => {
 
       container.replaceWith(fragment)
     } catch (err) {
-      // console.error('Mermaid 渲染失败:', err)
+      console.error('Mermaid 渲染失败:', err)
       container.dataset.mermaidStatus = 'error'
+      container.innerHTML = `<pre>渲染失败：\n${ content }\n</pre>`
     } finally {
       pendingQueue.delete(hash)
     }
@@ -107,8 +112,7 @@ export const mermaidPlugin = (md, options = {}) => {
   // 全局渲染控制器
   const processContainers = () => {
     const containers = document.querySelectorAll(`
-      div[data-mermaid-status="pending"],
-      div[data-mermaid-hash]:not([data-mermaid-status])
+      div[data-mermaid-status="pending"]
     `) as NodeListOf<HTMLElement>
 
 
@@ -120,9 +124,7 @@ export const mermaidPlugin = (md, options = {}) => {
       if (container.dataset.mermaidStatus !== 'pending') {
         container.dataset.mermaidStatus = 'pending'
       }
-      nextTick(() => {
-        renderMermaid(container)
-      })
+      renderMermaid(container)
     })
   }
 
@@ -137,7 +139,7 @@ export const mermaidPlugin = (md, options = {}) => {
 
   // 触发 Mermaid 图表渲染 export
   processMermaid.fn = () => {
-    processContainers()
+    requestAnimationFrame(processContainers)
   }
 }
 

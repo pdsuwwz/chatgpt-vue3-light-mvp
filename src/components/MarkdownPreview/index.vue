@@ -242,15 +242,16 @@ const showText = () => {
   // 若 reader 还没结束，则保持打字行为
   if (!readIsOver.value) {
     runReadBuffer()
+    renderMermaidProcess()
     typingAnimationFrame = requestAnimationFrame(showText)
   } else {
     // 读取剩余的 buffer
     runReadBuffer(
       () => {
+        renderMermaidProcess()
         typingAnimationFrame = requestAnimationFrame(showText)
       },
       () => {
-        renderMermaidProcess()
 
         window.$ModalNotification.success({
           title: '生成完毕',

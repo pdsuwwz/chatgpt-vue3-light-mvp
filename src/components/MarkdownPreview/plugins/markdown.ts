@@ -28,11 +28,9 @@ md.use(markdownItHighlight, {
 
 
 const transformMermaid = (content: string): string => {
-  const mermaidBlockRegex = /^```mermaid\n([\s\S]*?)\n```$/gm
-  return content.replace(mermaidBlockRegex, (match) => {
-    return match
-  })
+  return content.replace(/(```mermaid)(?![^]*?```)/g, '```')
 }
+
 
 const transformMathMarkdown = (markdownText: string) => {
   const data = splitAtDelimiters(markdownText, [
