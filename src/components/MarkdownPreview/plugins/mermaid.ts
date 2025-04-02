@@ -27,8 +27,6 @@ const verifyMermaid = (content: string) => {
 export const mermaidPlugin = (md, options = {}) => {
   // 缓存渲染结果
   const cache = new Map()
-  // 记录正在渲染中的图表
-  const pendingQueue = new Map()
 
   const defaultFence = md.renderer.rules.fence
   md.renderer.rules.fence = (tokens, idx, opts, env, self) => {
@@ -66,12 +64,7 @@ export const mermaidPlugin = (md, options = {}) => {
     const content = decodeURIComponent(encodedContent)
     const hash = container.dataset.mermaidHash
 
-
-    // 如果已经在渲染队列中，则直接返回
-    if (pendingQueue.has(hash)) return
-
     try {
-      pendingQueue.set(hash, true)
       let svg
 
       // 检查缓存
@@ -104,8 +97,6 @@ export const mermaidPlugin = (md, options = {}) => {
       console.error('Mermaid 渲染失败:', err)
       container.dataset.mermaidStatus = 'error'
       container.innerHTML = `<pre>渲染失败：\n${ content }\n</pre>`
-    } finally {
-      pendingQueue.delete(hash)
     }
   }
 
@@ -124,7 +115,9 @@ export const mermaidPlugin = (md, options = {}) => {
       if (container.dataset.mermaidStatus !== 'pending') {
         container.dataset.mermaidStatus = 'pending'
       }
-      renderMermaid(container)
+      nextTick(() => {
+        renderMermaid(container)
+      })
     })
   }
 
