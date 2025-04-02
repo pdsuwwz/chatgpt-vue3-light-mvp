@@ -139,7 +139,7 @@ export const mermaidPlugin = (md, options = {}) => {
 
   // 触发 Mermaid 图表渲染 export
   processMermaid.fn = () => {
-    requestAnimationFrame(processContainers)
+    processContainers()
   }
 }
 

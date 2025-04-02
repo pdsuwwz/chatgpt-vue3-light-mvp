@@ -252,6 +252,7 @@ const showText = () => {
         typingAnimationFrame = requestAnimationFrame(showText)
       },
       () => {
+        renderMermaidProcess()
 
         window.$ModalNotification.success({
           title: '生成完毕',
