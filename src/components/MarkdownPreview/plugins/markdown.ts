@@ -118,11 +118,11 @@ export const renderMarkdownText = (content: string) => {
   return md.render(mermaidTransformed)
 }
 
-const debounceRenderMermaid = _.debounce(() => {
-  processMermaid.fn()
+const debounceRenderMermaid = _.debounce((callback = () => {}) => {
+  processMermaid.fn(callback)
 }, 10)
 
 // 触发 Mermaid 渲染
-export const renderMermaidProcess = () => {
-  debounceRenderMermaid()
+export const renderMermaidProcess = (callback = () => {}) => {
+  debounceRenderMermaid(callback)
 }

@@ -2,7 +2,7 @@ import mermaid from 'mermaid'
 import CryptoJs from 'crypto-js'
 
 export const processMermaid = {
-  fn: () => {}
+  fn: (callback) => {}
 }
 
 const computeHash = (str) => {
@@ -43,7 +43,10 @@ export const mermaidPlugin = (md, options = {}) => {
 
 
     if (cache.has(hash)) {
-      return `<div data-mermaid-hash="${ hash }">${ cache.get(hash) }</div>`
+      return `
+        ${ defaultFence(tokens, idx, opts, env, self) }
+        <div data-mermaid-hash="${ hash }">${ cache.get(hash) }</div>
+      `
     }
 
     return `
@@ -59,7 +62,7 @@ export const mermaidPlugin = (md, options = {}) => {
   }
 
   // 后处理渲染 mermaid
-  const renderMermaid = async (container) => {
+  const renderMermaid = async (container, callback = () => {}) => {
     const encodedContent = container.dataset.mermaidContent
     const content = decodeURIComponent(encodedContent)
     const hash = container.dataset.mermaidHash
@@ -93,6 +96,8 @@ export const mermaidPlugin = (md, options = {}) => {
       fragment.appendChild(wrapper)
 
       container.replaceWith(fragment)
+
+      callback()
     } catch (err) {
       console.error('Mermaid 渲染失败:', err)
       container.dataset.mermaidStatus = 'error'
@@ -101,7 +106,7 @@ export const mermaidPlugin = (md, options = {}) => {
   }
 
   // 全局渲染控制器
-  const processContainers = () => {
+  const processContainers = (callback = () => {}) => {
     const containers = document.querySelectorAll(`
       div[data-mermaid-status="pending"]
     `) as NodeListOf<HTMLElement>
@@ -116,7 +121,7 @@ export const mermaidPlugin = (md, options = {}) => {
         container.dataset.mermaidStatus = 'pending'
       }
       nextTick(() => {
-        renderMermaid(container)
+        renderMermaid(container, callback)
       })
     })
   }
@@ -131,8 +136,8 @@ export const mermaidPlugin = (md, options = {}) => {
   })
 
   // 触发 Mermaid 图表渲染 export
-  processMermaid.fn = () => {
-    processContainers()
+  processMermaid.fn = (callback = () => {}) => {
+    processContainers(callback)
   }
 }
 

@@ -5,7 +5,7 @@ import type { CrossTransformFunction, TransformFunction } from './models'
 import { defaultMockModelName } from './models'
 
 interface Props {
-  reader: ReadableStreamDefaultReader<Uint8Array> | null | undefined
+  reader?: ReadableStreamDefaultReader<Uint8Array> | null | undefined
   model: string | null| undefined
   transformStreamFn: TransformFunction | null | undefined
 }
@@ -235,24 +235,24 @@ const showText = () => {
     cancelAnimationFrame(typingAnimationFrame)
     typingAnimationFrame = null
     readerLoading.value = false
-    renderMermaidProcess()
+    renderMermaidProcess(scrollToBottom)
     return
   }
 
   // 若 reader 还没结束，则保持打字行为
   if (!readIsOver.value) {
     runReadBuffer()
-    renderMermaidProcess()
+    renderMermaidProcess(scrollToBottom)
     typingAnimationFrame = requestAnimationFrame(showText)
   } else {
     // 读取剩余的 buffer
     runReadBuffer(
       () => {
-        renderMermaidProcess()
+        renderMermaidProcess(scrollToBottom)
         typingAnimationFrame = requestAnimationFrame(showText)
       },
       () => {
-        renderMermaidProcess()
+        renderMermaidProcess(scrollToBottom)
 
         window.$ModalNotification.success({
           title: '生成完毕',

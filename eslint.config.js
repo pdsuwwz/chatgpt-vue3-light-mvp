@@ -388,6 +388,10 @@ export default defineFlatConfig([
     }
   },
 
+  ...pluginVue.configs['flat/base'],
+  ...pluginVue.configs['flat/essential'],
+  ...pluginVue.configs['flat/strongly-recommended'],
+  ...pluginVue.configs['flat/recommended'],
   {
     files: ['**/*.vue'],
     languageOptions: {
@@ -408,10 +412,6 @@ export default defineFlatConfig([
     },
     processor: pluginVue.processors['.vue'],
     rules: {
-      ...pluginVue.configs['flat/base'].rules,
-      ...pluginVue.configs['flat/essential'].rules,
-      ...pluginVue.configs['flat/strongly-recommended'].rules,
-      ...pluginVue.configs['flat/recommended'].rules,
       'vue/no-v-html': 'off',
       'vue/multi-word-component-names': 0,
       'vue/singleline-html-element-content-newline': 'off',

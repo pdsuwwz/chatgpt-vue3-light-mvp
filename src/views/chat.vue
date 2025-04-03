@@ -252,18 +252,18 @@ const promptTextList = ref([
         flex="~ justify-between items-center"
       >
         <NavigationNavBar>
-          <template #bottom>
+          <template #right>
             <div
               flex="~ justify-center items-center wrap"
-              class="pt-10 text-16"
+              class="text-16 line-height-16"
             >
-              <span>当前模型：</span>
+              <span class="lt-xs:hidden">当前模型：</span>
               <div
                 flex="~ justify-center items-center"
               >
                 <n-select
                   v-model:value="businessStore.systemModelName"
-                  class="w-280 pr-10 font-italic font-bold"
+                  class="w-280 lt-xs:w-260 pr-10 font-italic font-bold"
                   placeholder="请选择模型"
                   :disabled="stylizingLoading"
                   :options="modelListSelections"
@@ -283,7 +283,11 @@ const promptTextList = ref([
                     >本仓库</a>到本地运行
                   </div>
                   <template #trigger>
-                    <span class="cursor-help font-bold c-primary text-17 i-radix-icons:question-mark-circled"></span>
+                    <span
+                      class="cursor-help font-bold c-primary text-17 i-ic:sharp-help"
+                      ml-10
+                      mr-24
+                    ></span>
                   </template>
                 </CustomTooltip>
               </div>

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { systemTitle } from '@/base'
 </script>
 
 <template>
