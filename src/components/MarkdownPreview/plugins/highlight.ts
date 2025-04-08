@@ -48,4 +48,13 @@ function hljsDefineVue() {
 
 hljs.registerLanguage('vue', hljsDefineVue)
 
+
+const hljsDefineMermaid = () => {
+  return {
+    name: 'Mermaid',
+    contains: []
+  }
+}
+hljs.registerLanguage('mermaid', hljsDefineMermaid)
+
 export default hljs

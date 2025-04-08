@@ -1,5 +1,5 @@
 import globals from 'globals'
-import { defineFlatConfig } from 'eslint-define-config'
+import { defineConfig } from 'eslint/config'
 
 import * as parserTypeScript from '@typescript-eslint/parser'
 import pluginTypeScript from '@typescript-eslint/eslint-plugin'
@@ -22,7 +22,7 @@ function renameRules(rules, map) {
   )
 }
 
-export default defineFlatConfig([
+export default defineConfig([
   {
     ignores: [
       'public',

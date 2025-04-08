@@ -27,13 +27,13 @@
     "url": "https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/issues"
   },
   "dependencies": {
+    "@nzoth/markdown-it-mermaid-sse": "^0.0.1",
     "@vueuse/core": "^13.0.0",
     "axios": "1.8.4",
     "dompurify": "^3.2.4",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "marked": "^15.0.7",
-    "mermaid": "^11.6.0",
     "naive-ui": "^2.41.0",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.1",
@@ -67,7 +67,6 @@
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "eslint": "^9.23.0",
-    "eslint-define-config": "^2.1.0",
     "eslint-plugin-html": "8.1.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-vue": "^10.0.0",
