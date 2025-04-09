@@ -27,7 +27,7 @@
     "url": "https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/issues"
   },
   "dependencies": {
-    "@nzoth/markdown-it-mermaid-sse": "^0.0.1",
+    "@nzoth/toolkit": "^0.0.3",
     "@vueuse/core": "^13.0.0",
     "axios": "1.8.4",
     "dompurify": "^3.2.4",

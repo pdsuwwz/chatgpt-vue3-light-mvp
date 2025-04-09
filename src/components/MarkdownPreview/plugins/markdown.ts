@@ -13,7 +13,7 @@ import {
   markdownItMermaidPlugin,
   renderMermaidSSE,
   transformMermaid
-} from '@nzoth/markdown-it-mermaid-sse'
+} from '@nzoth/toolkit'
 
 const md = new MarkdownIt({
   html: true,
