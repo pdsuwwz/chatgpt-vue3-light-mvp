@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@nzoth/toolkit':
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: ^0.0.4
+        version: 0.0.4
       '@vueuse/core':
         specifier: ^13.0.0
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))
@@ -1051,11 +1051,11 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@nzoth/markdown-it-mermaid-sse@0.0.3':
-    resolution: {integrity: sha512-Nm8Q77hGUgfyHWfnfJH+iKNuZkgfYSgrS/LlKD3q7vxz4fNhMYO9fMxelgfiTtcwKjlDHC0JA21eC5I2iarEOw==}
+  '@nzoth/markdown-it-mermaid-sse@0.0.4':
+    resolution: {integrity: sha512-IgRfkCF3yO+eZ9LuRWtpzzrRzJymhV/gzysFt811TaiUEI/upKuCVp9i7xkfV75A7B8YzCMmQ3LTOlLnSgp1Jw==}
 
-  '@nzoth/toolkit@0.0.3':
-    resolution: {integrity: sha512-9LOL3x68jTF78Ob5w06J2Tlh3ypF8f3KhgcvYgfE/S++56yLRnkrJZKf7c03I4E+isIEP8JTEALh8yR9BWDG+Q==}
+  '@nzoth/toolkit@0.0.4':
+    resolution: {integrity: sha512-uPbPN+bF2AhbCktKkpIbKar39xx+E1NRNNLleW7nkoKMYDrdUdiVvS8bRqTTJtszleiuLR/4p7dxOTB+EAJLIg==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -4713,15 +4713,15 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@nzoth/markdown-it-mermaid-sse@0.0.3':
+  '@nzoth/markdown-it-mermaid-sse@0.0.4':
     dependencies:
       mermaid: 11.6.0
     transitivePeerDependencies:
       - supports-color
 
-  '@nzoth/toolkit@0.0.3':
+  '@nzoth/toolkit@0.0.4':
     dependencies:
-      '@nzoth/markdown-it-mermaid-sse': 0.0.3
+      '@nzoth/markdown-it-mermaid-sse': 0.0.4
     transitivePeerDependencies:
       - supports-color
 

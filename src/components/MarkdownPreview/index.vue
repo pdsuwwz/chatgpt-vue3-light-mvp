@@ -571,25 +571,5 @@ const emptyPlaceholder = computed(() => {
       --at-apply: line-height-26;
     }
   }
-
-  .mermaid-wrapper {
-    padding: 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background-color: #f8fafc;
-    margin: 16px 0;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
-    overflow: auto;
-    contain: layout;
-    transform: translateZ(0);
-
-    pre {
-      font-size: 14px;
-      color: #64748b;
-      font-family: monospace;
-      margin: 0;
-    }
-
-  }
 }
 </style>

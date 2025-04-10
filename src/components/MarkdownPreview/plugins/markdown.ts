@@ -15,6 +15,8 @@ import {
   transformMermaid
 } from '@nzoth/toolkit'
 
+import '@nzoth/toolkit/styles'
+
 const md = new MarkdownIt({
   html: true,
   linkify: true,
