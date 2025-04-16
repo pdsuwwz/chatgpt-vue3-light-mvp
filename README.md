@@ -424,6 +424,17 @@ export const defaultModelName = defaultMockModelName
 - 提交 Pull Request (PR) 将您的项目添加到列表中
 
 
+## 🚨 免责声明
+
+本模板作为 AI 对话原型技术参考方案，使用者需知悉以下风险及义务：
+
+- **技术风险**：依赖框架（Vue3/Vite/Naive UI等）存在版本迭代风险，第三方组件（MarkdownIt/Mermaid/KaTex等）以原始仓库规范为准，API 服务商条款变更可能导致功能异常  
+- **技术局限性**：当前实现方案存在功能边界（如对话模式限制），技术选型需根据实际场景评估
+- **使用限制**：禁止用于违反大模型服务条款或数据隐私法规的场景，使用者需自行完成 API 密钥安全管理
+- **责任免除**：不承诺大模型输出准确性及业务场景适配性，因使用/二次开发导致的后果由使用者自行承担
+
+使用本 AI 模板即视为已阅读并同意上述条款，且自愿承担所有技术及法律风险
+
 ## License
 
 [MIT](./LICENSE) License | Copyright © 2020-PRESENT [Wisdom](https://github.com/pdsuwwz)
