@@ -12,10 +12,13 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd())
+
   return {
-    base: process.env.VITE_ROUTER_MODE === 'hash'
+    base: env.VITE_ROUTER_MODE === 'hash'
       ? ''
       : '/',
     server: {
@@ -151,7 +154,7 @@ export default defineConfig(({ mode }) => {
       ]
     },
     define: {
-      'process.env': process.env
+      'process.env.VITE_ROUTER_MODE': JSON.stringify(env.VITE_ROUTER_MODE)
     },
     css: {
       preprocessorOptions: {

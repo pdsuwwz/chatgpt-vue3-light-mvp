@@ -312,7 +312,7 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef, App, ComponentInternalInstance, GlobalComponents, SetupContext } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef, App, ComponentInternalInstance, GlobalComponents, SetupContext } from 'vue'
   import('vue')
   // @ts-ignore
   export type { RouteRecordRaw, RouteLocationRaw } from 'vue-router'
