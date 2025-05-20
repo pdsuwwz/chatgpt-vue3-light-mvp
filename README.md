@@ -1,3 +1,10 @@
+<p style="text-align:center;" align="center"><a href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"><picture align="center">
+  <source media="(prefers-color-scheme: dark)" srcset="https://i.stardots.io/wisdom/1747723353145.png"  width="100%" align="center" style="margin-bottom:20px;">
+  <source media="(prefers-color-scheme: light)" srcset="https://i.stardots.io/wisdom/1747723353146.png" width="100%" align="center" style="margin-bottom:20px;">
+  <img alt="color mode" src="https://i.stardots.io/wisdom/1747723353146.png" width="100%" align="center" style="margin-bottom:20px;">
+</picture></a><br /><br /></p>
+
+
 # chatgpt-vue3-light-mvp
 
 [![Deploy](https://img.shields.io/badge/passing-black?style=flat&logo=Netlify&label=Netlify&color=3bb92c&labelColor=black)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/deployments)
