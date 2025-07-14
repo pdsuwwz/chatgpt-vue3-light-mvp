@@ -416,7 +416,7 @@ export const modelMappingList: TypesModelLLM[] = [
           'Authorization': `Bearer ${ import.meta.env.VITE_SPARK_KEY }`
         },
         body: JSON.stringify({
-          'model': 'generalv3.5',
+          'model': '4.0Ultra',
           stream: true,
           messages: [
             {
