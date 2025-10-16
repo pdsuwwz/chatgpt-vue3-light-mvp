@@ -4,6 +4,7 @@
   "author": "Wisdom <pdsu.wwz@foxmail.com>",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@10.18.2",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
