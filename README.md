@@ -55,7 +55,7 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 * Vue 3.x
 * Node >= 22.12.x
-* Pnpm 9.x
+* Pnpm 10.x
 * **VS Code 插件 `dbaeumer.vscode-eslint` >= v3.0.5 (pre-release)**
 
 ## 运行效果
