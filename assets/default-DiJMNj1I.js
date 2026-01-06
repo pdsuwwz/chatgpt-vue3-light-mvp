@@ -1,0 +1,1 @@
+import{d as n,c as e,w as r,r as s,o,a as c}from"./index-DoY4lPyv.js";const p=n({name:"LayoutDefault",__name:"default",setup(_){return(u,l)=>{const t=s("router-view");return o(),e(t,null,{default:r(({Component:a})=>[(o(),e(c(a)))]),_:1})}}});export{p as default};
