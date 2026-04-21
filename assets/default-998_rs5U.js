@@ -1,0 +1,1 @@
+import{B as e,F as t,K as n,d as r,v as i,z as a}from"./runtime-core.esm-bundler-DXxRshJl.js";var o=i({name:`LayoutDefault`,__name:`default`,setup(i){return(i,o)=>{let s=a(`router-view`);return t(),r(s,null,{default:n(({Component:n})=>[(t(),r(e(n)))]),_:1})}}});export{o as default};
