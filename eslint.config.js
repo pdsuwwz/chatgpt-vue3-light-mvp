@@ -30,7 +30,10 @@ export default defineConfig([
       'dist',
       'node_modules',
       'coverage',
-      'src/assets/**'
+      'src/assets/**',
+      'auto-imports.d.ts',
+      'components.d.ts',
+      'components-instance.d.ts'
     ]
   },
   {
@@ -351,11 +354,6 @@ export default defineConfig([
         }
       }
     },
-    settings: {
-      'import/core-modules': [
-        'uno.css'
-      ]
-    },
     plugins: {
       '@typescript-eslint': pluginTypeScript
     },
@@ -383,7 +381,6 @@ export default defineConfig([
     files: ['*.d.ts'],
     rules: {
       'eslint-comments/no-unlimited-disable': 'off',
-      'import/no-duplicates': 'off',
       'unused-imports/no-unused-vars': 'off'
     }
   },
