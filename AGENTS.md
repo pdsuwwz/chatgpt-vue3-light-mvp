@@ -3,7 +3,7 @@
 [Context]
 
 - Project: chatgpt-vue3-light-mvp
-- Stack: Vue 3, Vite 6/7, TypeScript, Pinia, Naive UI, UnoCSS
+- Stack: Vue 3, Vite 8, TypeScript, Pinia, Naive UI, UnoCSS
 - Package manager: pnpm (see `packageManager` in `package.json`)
 - Entry: `src/main.ts`, root HTML `index.html`
 - Styling: UnoCSS + Sass

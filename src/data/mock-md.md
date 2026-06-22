@@ -12,7 +12,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 
-<a target="_blank" href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp">本仓库</a>是一个可二次开发的 ChatBot 对话 Web 端 MVP 原型模板，基于 `Vue3`、`TypeScript`、`Naive UI`、`UnoCSS` 等主流技术构建。项目特点如下：
+<a target="_blank" href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp">本仓库</a>是一个可二次开发的 ChatBot 对话 Web 端 MVP 原型模板，基于 `Vue 3`、`Vite`、`TypeScript`、`Naive UI`、`UnoCSS` 等主流技术构建。项目特点如下：
 
 - **大语言模型 API 集成**: 简单集成大语言模型 API，支持单轮 AI 对话模式。每次提问都会独立响应，无需上下文，提供简洁高效的对话体验。
 - **Markdown 预览**: 集成 Markdown 预览功能，使用户可以发送和接收格式化的 Markdown 内容，增强用户交流的灵活性和展示效果。

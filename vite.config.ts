@@ -156,6 +156,21 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.VITE_ROUTER_MODE': JSON.stringify(env.VITE_ROUTER_MODE)
     },
+    build: {
+      chunkSizeWarningLimit: 2500,
+      rollupOptions: {
+        onwarn(warning, defaultHandler) {
+          if (
+            warning.code === 'INVALID_ANNOTATION'
+            && warning.id?.includes('@vueuse/core')
+          ) {
+            return
+          }
+
+          defaultHandler(warning)
+        }
+      }
+    },
     css: {
       preprocessorOptions: {
         scss: {
