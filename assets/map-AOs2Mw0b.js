@@ -1,1 +1,0 @@
-import{C as e,m as t}from"./_baseFor-tdPHudh_.js";import{n}from"./toString-CdQHnqvH.js";import{i as r,n as i}from"./isEmpty-Cc1eM09d.js";function a(e,n){var r=-1,a=t(e)?Array(e.length):[];return i(e,function(e,t,i){a[++r]=n(e,t,i)}),a}function o(t,i){return(e(t)?n:a)(t,r(i,3))}export{a as n,o as t};

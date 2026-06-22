@@ -1,1 +1,0 @@
-import{i as e}from"./_baseFor-tdPHudh_.js";var t=`Expected a function`;function n(r,i){if(typeof r!=`function`||i!=null&&typeof i!=`function`)throw TypeError(t);var a=function(){var e=arguments,t=i?i.apply(this,e):e[0],n=a.cache;if(n.has(t))return n.get(t);var o=r.apply(this,e);return a.cache=n.set(t,o)||n,o};return a.cache=new(n.Cache||e),a}n.Cache=e;export{n as t};
