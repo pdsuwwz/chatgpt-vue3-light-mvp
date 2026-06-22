@@ -12,7 +12,7 @@
 [![thanks](https://badgen.net/badge/thanks/♥/pink)](https://github.com/pdsuwwz)
 [![License](https://img.shields.io/github/license/pdsuwwz/chatgpt-vue3-light-mvp?color=466fe8)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/LICENSE)
 
-💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式, Mermaid 图表语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
+💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue 3、Vite 8、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式, Mermaid 图表语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
@@ -24,7 +24,7 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 
 ## 🎉 特性
 
-* 🛠️ **核心技术栈**：__Vite 6 + Vue 3 + TypeScript + Pinia(v3) + ESLint (v9)__
+* 🛠️ **核心技术栈**：__Vite 8 + Vue 3 + TypeScript + Pinia(v3) + ESLint (v10)__
 * 🎨 **UI 框架**：__Naive UI 2.x__
 * 🪄 **解放双手**：内置 **Unplugin Auto Import**，支持组件按需自动导入，提升开发效率
 * 🌟 **图标支持**：内置 **UnoCSS + Iconify**，实现原子化样式内联和图标按需自动导入
@@ -57,6 +57,11 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 * Node >= 22.12.x
 * Pnpm 10.x
 * **VS Code 插件 `dbaeumer.vscode-eslint` >= v3.0.5 (pre-release)**
+
+## 依赖说明
+
+* 当前版本已升级到 Vite 8 + Vue 3.5，数学公式渲染使用 `@vscode/markdown-it-katex` + `katex`。
+* `katex` 保持在 `0.16.x` 以兼容 `@vscode/markdown-it-katex`，并在 Vite 8 下显式使用 KaTeX ESM 入口，避免 CommonJS 预构建影响公式解析。
 
 ## 运行效果
 
@@ -445,4 +450,3 @@ export const defaultModelName = defaultMockModelName
 ## License
 
 [MIT](./LICENSE) License | Copyright © 2020-PRESENT [Wisdom](https://github.com/pdsuwwz)
-

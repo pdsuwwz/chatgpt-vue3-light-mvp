@@ -3,11 +3,12 @@ import hljs from './highlight'
 import markdownItHighlight from 'markdown-it-highlightjs'
 import { preWrapperPlugin } from './preWrapper'
 
+import katex from 'katex'
 import markdownItKatex from '@vscode/markdown-it-katex'
 import splitAtDelimiters from 'katex/contrib/auto-render/splitAtDelimiters'
 
 import 'katex/dist/katex.min.css'
-import 'katex/dist/contrib/mhchem.min.js'
+import 'katex/contrib/mhchem'
 
 import {
   markdownItMermaidPlugin,
@@ -23,7 +24,7 @@ const md = new MarkdownIt({
   typographer: true
 })
 
-const resolveMarkdownItPlugin = <T,>(plugin: T): any =>
+const resolveMarkdownItPlugin = <T, >(plugin: T): any =>
   // Some CJS/dual packages expose the actual plugin under `.default`.
   // MarkdownIt expects a function (which has `.apply`); passing a module object breaks at runtime.
   (plugin as any)?.default ?? plugin
@@ -34,7 +35,9 @@ md.use(markdownItHighlight, {
   .use(preWrapperPlugin, {
     hasSingleTheme: true
   })
-  .use(resolveMarkdownItPlugin(markdownItKatex))
+  .use(resolveMarkdownItPlugin(markdownItKatex), {
+    katex
+  })
   .use(markdownItMermaidPlugin)
 
 
