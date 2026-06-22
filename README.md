@@ -14,6 +14,9 @@
 
 💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue 3、Vite 8、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式, Mermaid 图表语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
+> [!NOTE]
+> 本项目已将核心实现“蒸馏”为可复用的 Agent Skill：[`chatbot-mvp-distillation`](.agents/skills/chatbot-mvp-distillation/SKILL.md)，并提供中文版：[`chatbot-mvp-distillation-zh`](.agents/skills/chatbot-mvp-distillation-zh/SKILL.md)。如果你想在其他项目中借鉴本项目的 SSE 流式渲染、模型适配、打字机输出、Markdown/KaTeX/Mermaid 渲染等能力，可以把它当作一份面向 AI Agent 的架构蓝图使用。
+
 
 __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
 
@@ -35,6 +38,54 @@ __[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp
 * 🔑 **环境变量管理**：通过 `.env` 文件管理 API 密钥，支持不同大模型的配置
 * 🌍 **大语言模型 API**：兼容 Deepseek V3/R1, Spark 星火认知大模型、Kimi Moonshot 月之暗面大模型、SiliconFlow、Ollama 等，允许自由扩展
 * 🚀 **灵活扩展**：轻量级模块化 MVP 设计，纯前端开发，项目结构清晰，快速搭建 AI 对话原型
+
+## 🧩 Agent Skill 蒸馏
+
+本仓库额外提供了项目本地 Skill：英文版 [`chatbot-mvp-distillation`](.agents/skills/chatbot-mvp-distillation/SKILL.md)，以及中文版 [`chatbot-mvp-distillation-zh`](.agents/skills/chatbot-mvp-distillation-zh/SKILL.md)。它们不是运行时功能，也不是 npm 包，而是把当前 MVP 中已经验证过的工程经验整理成一组可被 AI 编程 Agent 读取的架构参考。类似的沉淀方式在很多团队里会以 `playbook`、`recipe`、`blueprint`、`architecture notes` 等形式存在；这里选择用 Skill，是为了让其他项目在开发类似 Chat Bot 产品时，可以更直接地复用这些设计经验。
+
+这个 Skill 面向“其他项目借鉴”，重点不在于逐文件复制当前仓库，而在于提炼可迁移的模块边界和实现策略：
+
+- **流式链路**：从 `fetch(Response.body)`、`TextDecoderStream`、`TransformStream` 到 `reader` 的 SSE/JSON/plain text 拆包方式
+- **模型适配**：通过模型映射表隔离 DeepSeek、Spark、Moonshot、SiliconFlow、Ollama、Mock Stream 等不同响应格式
+- **打字机渲染**：将网络读取速度和 UI 展示速度解耦，使用缓冲区逐帧输出
+- **富文本渲染**：沉淀 Markdown、代码高亮、KaTeX 数学公式、Mermaid 图表和 `<think>` 推理块的渲染管线
+- **迁移检查**：提供面向其他项目的安全、代理、密钥、停止生成、滚动、空状态、完成态等检查项
+
+目录结构如下：
+
+```text
+.agents/
+└── skills/
+    ├── chatbot-mvp-distillation/
+    │   ├── SKILL.md
+    │   ├── agents/
+    │   │   └── openai.yaml
+    │   └── references/
+    │       ├── architecture.md
+    │       ├── streaming-sse.md
+    │       ├── model-adapters.md
+    │       ├── markdown-rendering.md
+    │       └── migration-checklist.md
+    └── chatbot-mvp-distillation-zh/
+        ├── SKILL.md
+        ├── agents/
+        │   └── openai.yaml
+        └── references/
+            ├── architecture.md
+            ├── streaming-sse.md
+            ├── model-adapters.md
+            ├── markdown-rendering.md
+            └── migration-checklist.md
+```
+
+建议使用方式：
+
+```text
+Use $chatbot-mvp-distillation to design a reusable streaming chatbot UI for another project.
+Use $chatbot-mvp-distillation-zh to design a reusable streaming chatbot UI for another project.
+```
+
+如果你的 Agent 不支持自动发现项目内 Skill，也可以直接阅读 `.agents/skills/chatbot-mvp-distillation/SKILL.md` 或 `.agents/skills/chatbot-mvp-distillation-zh/SKILL.md`，再按其中的引用文件逐步加载上下文。
 
 ### 🧠 已支持的模型
 
