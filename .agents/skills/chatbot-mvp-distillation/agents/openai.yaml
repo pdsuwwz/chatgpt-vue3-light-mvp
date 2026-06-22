@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chatbot MVP Distillation"
+  short_description: "Distill this chatbot MVP into reusable architecture"
+  default_prompt: "Use $chatbot-mvp-distillation to design a reusable streaming chatbot UI for another project."

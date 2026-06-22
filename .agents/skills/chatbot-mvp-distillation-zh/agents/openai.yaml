@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chatbot MVP 蒸馏 zh"
+  short_description: "中文蒸馏本项目的流式聊天、模型适配与富文本渲染架构"
+  default_prompt: "Use $chatbot-mvp-distillation-zh to design a reusable streaming chatbot UI for another project."
