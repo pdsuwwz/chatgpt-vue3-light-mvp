@@ -3,11 +3,10 @@ import { defaultMockModelName, modelMappingList, triggerModelTermination } from 
 import { type InputInst } from 'naive-ui'
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface'
 import { isGithubDeployed } from '@/config'
+import { systemTitle } from '@/base'
 
 import { UAParser } from 'ua-parser-js'
 
-const route = useRoute()
-const router = useRouter()
 const businessStore = useBusinessStore()
 
 
@@ -131,9 +130,9 @@ const isMacos = computed(() => {
 
 const placeholder = computed(() => {
   if (stylizingLoading.value) {
-    return `输入任意问题...`
+    return '正在生成回答...'
   }
-  return `输入任意问题, 按 ${ isMacos.value ? 'Command' : 'Ctrl' } + Enter 键快捷开始...`
+  return '输入任意问题...'
 })
 
 watch(
@@ -202,19 +201,13 @@ const PromptTag = defineComponent({
   },
   render() {
     return (
-      <div
-        b="~ solid transparent"
-        hover="shadow-[--shadow] b-primary bg-#e8e8e8"
-        class={[
-          'px-10 py-2 rounded-7 text-12',
-          'max-w-230 transition-all-300 select-none cursor-pointer',
-          'c-#525252 bg-#ededed'
-        ]}
-        style={{
-          '--shadow': '3px 3px 3px -1px rgba(0,0,0,0.1)'
-        }}
+      <button
+        type="button"
+        class="prompt-suggestion"
+        aria-label={ `使用建议：${ this.text }` }
         onClick={this.handleClick}
       >
+        <span class="prompt-suggestion-icon i-lucide:corner-down-right" aria-hidden="true"></span>
         <n-ellipsis
           tooltip={{
             contentClass: 'wrapper-tooltip-scroller',
@@ -226,7 +219,7 @@ const PromptTag = defineComponent({
             default: () => this.text
           }}
         </n-ellipsis>
-      </div>
+      </button>
     )
   }
 })
@@ -242,142 +235,661 @@ const promptTextList = ref([
 <template>
   <LayoutCenterPanel
     :loading="loading"
+    class="chat-page"
   >
-    <!-- 内容区域 -->
-    <div
-      flex="~ col"
-      h-full
-    >
-      <div
-        flex="~ justify-between items-center"
-      >
-        <NavigationNavBar>
-          <template #right>
-            <div
-              flex="~ justify-center items-center wrap"
-              class="text-16 line-height-16"
-            >
-              <span class="lt-xs:hidden">当前模型：</span>
-              <div
-                flex="~ justify-center items-center"
-              >
-                <n-select
-                  v-model:value="businessStore.systemModelName"
-                  class="w-280 lt-xs:w-260 pr-10 font-italic font-bold"
-                  placeholder="请选择模型"
-                  :disabled="stylizingLoading"
-                  :options="modelListSelections"
-                />
-                <CustomTooltip
-                  :disabled="false"
-                >
-                  <div>注意：</div>
-                  <div>
-                    演示环境仅支持 “模拟数据模型”
-                  </div>
-                  <div>
-                    如需测试其他模型请克隆<a
-                      href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"
-                      target="_blank"
-                      class="px-2 underline c-warning font-bold"
-                    >本仓库</a>到本地运行
-                  </div>
-                  <template #trigger>
-                    <span
-                      class="cursor-help font-bold c-primary text-17 i-ic:sharp-help"
-                      ml-10
-                      mr-24
-                    ></span>
-                  </template>
-                </CustomTooltip>
-              </div>
-            </div>
-          </template>
-        </NavigationNavBar>
-      </div>
+    <div class="chat-workspace">
+      <header class="chat-toolbar">
+        <a
+          class="chat-brand"
+          href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"
+          target="_blank"
+          rel="noreferrer"
+          :aria-label="`${systemTitle}，打开项目仓库`"
+        >
+          <span
+            class="chat-brand-icon i-lucide:message-square-text"
+            aria-hidden="true"
+          ></span>
+          <span class="chat-brand-title">{{ systemTitle }}</span>
+        </a>
 
-      <div
-        flex="1 ~ col"
-        min-h-0
-        pb-20
-      >
+        <div class="chat-toolbar-actions">
+          <span class="chat-model-label">当前模型</span>
+          <n-select
+            v-model:value="businessStore.systemModelName"
+            class="chat-model-select"
+            placeholder="请选择模型"
+            :disabled="stylizingLoading"
+            :options="modelListSelections"
+          />
+          <CustomTooltip :disabled="false">
+            <div>注意：</div>
+            <div>演示环境仅支持 “模拟数据模型”</div>
+            <div>
+              如需测试其他模型请克隆<a
+                href="https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"
+                target="_blank"
+                rel="noreferrer"
+                class="repo-help-link"
+              >本仓库</a>到本地运行
+            </div>
+            <template #trigger>
+              <button
+                type="button"
+                class="chat-help-button"
+                aria-label="查看模型使用说明"
+              >
+                <span
+                  class="i-lucide:circle-help"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </template>
+          </CustomTooltip>
+        </div>
+      </header>
+
+      <main class="chat-response-region">
         <MarkdownPreview
           ref="refReaderMarkdownPreview"
           v-model:reader="outputTextReader"
+          content-class="chat-markdown-surface"
           :model="businessStore.currentModelItem?.modelName"
           :transform-stream-fn="businessStore.currentModelItem?.transformStreamValue"
           @failed="onFailedReader"
           @completed="onCompletedReader"
         />
-      </div>
+      </main>
 
-      <div
-        flex="~ col items-center"
-        flex-basis="10%"
-        p="14px"
-        py="0"
+      <section
+        class="chat-composer-zone"
+        aria-label="消息输入"
       >
-        <div
-          w-full
-          flex="~ justify-start"
-          class="px-1em pb-10"
-        >
-          <n-space>
+        <div class="chat-composer-inner">
+          <div
+            class="prompt-suggestions"
+            aria-label="建议问题"
+          >
             <PromptTag
               v-for="(textItem, idx) in promptTextList"
               :key="idx"
               :text="textItem"
             />
-          </n-space>
+          </div>
+
+          <div class="chat-composer-editor">
+            <n-input
+              ref="refInputTextString"
+              v-model:value="inputTextString"
+              type="textarea"
+              autofocus
+              class="chat-textarea textarea-resize-none"
+              :placeholder="placeholder"
+              :style="{
+                '--n-border-radius': '8px',
+                '--n-padding-left': '16px',
+                '--n-padding-right': '64px',
+                '--n-padding-vertical': '9px',
+                '--n-color': 'transparent',
+                '--n-color-focus': 'transparent',
+                '--n-border': 'none',
+                '--n-border-hover': 'none',
+                '--n-border-focus': 'none',
+                '--n-box-shadow-focus': 'none',
+                '--n-placeholder-color': '#8a8b86',
+                '--n-text-color': '#20201e',
+              }"
+            />
+            <n-tooltip>
+              <template #trigger>
+                <n-button
+                  class="chat-submit-button"
+                  :class="{
+                    'is-stopping': stylizingLoading
+                  }"
+                  :aria-label="stylizingLoading ? '停止生成' : '发送消息'"
+                  @click.stop="handleCreateStylized()"
+                >
+                  <span
+                    v-if="stylizingLoading"
+                    class="i-lucide:square"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    v-else
+                    class="i-lucide:arrow-up"
+                    aria-hidden="true"
+                  ></span>
+                </n-button>
+              </template>
+              {{ stylizingLoading ? '停止生成' : '发送消息' }}
+            </n-tooltip>
+          </div>
         </div>
-        <div
-          relative
-          flex="1"
-          w-full
-          px-1em
-        >
-          <n-input
-            ref="refInputTextString"
-            v-model:value="inputTextString"
-            type="textarea"
-            autofocus
-            h-full
-            class="textarea-resize-none text-15"
-            :style="{
-              '--n-border-radius': '20px',
-              '--n-padding-left': '20px',
-              '--n-padding-right': '20px',
-              '--n-padding-vertical': '10px',
-            }"
-            :placeholder="placeholder"
-          />
-          <n-float-button
-            position="absolute"
-            :right="40"
-            bottom="50%"
-            :type="stylizingLoading ? 'primary' : 'default'"
-            color
-            :class="[
-              stylizingLoading && 'opacity-90',
-              'translate-y-50%'
-            ]"
-            @click.stop="handleCreateStylized()"
-          >
-            <div
-              v-if="stylizingLoading"
-              class="i-svg-spinners:pulse-2 c-#fff"
-            ></div>
-            <div
-              v-else
-              class="transform-rotate-z--90 text-22 c-#303133/70 i-hugeicons:start-up-02"
-            ></div>
-          </n-float-button>
-        </div>
-      </div>
+      </section>
     </div>
   </LayoutCenterPanel>
 </template>
 
 <style lang="scss" scoped>
+.chat-page {
+  --center-panel-background: #f7f7f5;
+  --center-panel-shadow: none;
+  --footer-background: #f7f7f5;
+  --footer-border-color: #e6e6e1;
+  --footer-padding: 8px 0;
+  --footer-font-size: 12px;
+  --footer-text-color: #858680;
+}
+
+.chat-workspace {
+  --chat-background: #f7f7f5;
+  --chat-surface: #fff;
+  --chat-text: #20201e;
+  --chat-muted: #6f706b;
+  --chat-border: #deded9;
+  --chat-border-strong: #c9cac3;
+  --chat-accent: #596b47;
+  --chat-accent-hover: #4d5e3d;
+
+  display: grid;
+  grid-template-rows: 56px minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--chat-text);
+  background: var(--chat-background);
+}
+
+.chat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--chat-border);
+  background: rgb(255 255 255 / 76%);
+}
+
+.chat-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: var(--chat-text);
+  transition: color 150ms ease;
+
+  &:hover {
+    color: var(--chat-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(89 107 71 / 38%);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+}
+
+.chat-brand-icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+}
+
+.chat-brand-title {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-toolbar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-model-label {
+  margin-right: 2px;
+  color: var(--chat-muted);
+  font-size: 13px;
+}
+
+.chat-model-select {
+  width: 252px;
+
+  :deep(.n-base-selection) {
+    --n-border-radius: 7px !important;
+    --n-border: 1px solid var(--chat-border) !important;
+    --n-border-hover: 1px solid var(--chat-border-strong) !important;
+    --n-border-active: 1px solid var(--chat-accent) !important;
+    --n-box-shadow-active: 0 0 0 2px rgb(89 107 71 / 12%) !important;
+    --n-box-shadow-focus: 0 0 0 2px rgb(89 107 71 / 12%) !important;
+    --n-color: var(--chat-surface) !important;
+    --n-text-color: var(--chat-text) !important;
+
+    min-height: 36px;
+    font-size: 13px;
+  }
+}
+
+.chat-help-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  color: var(--chat-muted);
+  font-size: 18px;
+  cursor: help;
+  background: transparent;
+  transition: color 150ms ease, background-color 150ms ease;
+
+  &:hover {
+    color: var(--chat-text);
+    background: #eeeeea;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(89 107 71 / 38%);
+    outline-offset: 1px;
+  }
+}
+
+.repo-help-link {
+  padding: 0 2px;
+  color: #d5e7c2;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #b9d29f;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    text-decoration-color: #fff;
+  }
+}
+
+.chat-response-region {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chat-composer-zone {
+  min-width: 0;
+  padding: 8px 24px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid #e8e8e3;
+  background: var(--chat-background);
+}
+
+.chat-composer-inner {
+  width: min(100%, 860px);
+  margin: 0 auto;
+}
+
+.prompt-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 6px;
+}
+
+:deep(.prompt-suggestion) {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 320px;
+  height: 32px;
+  padding: 0 10px;
+  overflow: hidden;
+  border: 1px solid var(--chat-border);
+  border-radius: 6px;
+  color: #555650;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+
+  &:hover {
+    border-color: var(--chat-border-strong);
+    color: var(--chat-text);
+    background: #eeeeea;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(89 107 71 / 38%);
+    outline-offset: 1px;
+  }
+}
+
+:deep(.prompt-suggestion-icon) {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  color: #858680;
+}
+
+.chat-composer-editor {
+  position: relative;
+  min-height: 64px;
+  overflow: hidden;
+  border: 1px solid #d6d6d1;
+  border-radius: 10px;
+  background: var(--chat-surface);
+  box-shadow: 0 1px 2px rgb(32 32 30 / 5%);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+
+  &:focus-within {
+    border-color: var(--chat-accent);
+    box-shadow: 0 0 0 2px rgb(89 107 71 / 12%);
+  }
+}
+
+.chat-textarea {
+  width: 100%;
+  height: 64px;
+  font-size: 15px;
+  line-height: 1.55;
+
+  :deep(.n-input-wrapper),
+  :deep(.n-input__textarea) {
+    height: 100%;
+  }
+}
+
+.chat-submit-button {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 18px;
+  background: var(--chat-accent);
+  transition: background-color 150ms ease, opacity 150ms ease;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: var(--chat-accent-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(89 107 71 / 42%);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background: #435136;
+  }
+
+  &.is-stopping {
+    background: #33342f;
+
+    &:hover,
+    &:focus {
+      background: #20211e;
+    }
+  }
+
+  :deep(.n-button__content) {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+:deep(.chat-markdown-surface) {
+  background: transparent;
+}
+
+:deep(.chat-markdown-surface .markdown-content-scroller) {
+  padding: 36px 24px 48px;
+  scrollbar-color: #c9cac3 transparent;
+  scrollbar-width: thin;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper) {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  color: #2b2c28;
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+:deep(.chat-markdown-surface .markdown-stream-status) {
+  display: flex;
+  align-items: center;
+  width: min(100%, 820px);
+  min-height: 32px;
+  margin: 8px auto 0;
+  color: var(--chat-accent);
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper h1),
+:deep(.chat-markdown-surface .markdown-wrapper h2),
+:deep(.chat-markdown-surface .markdown-wrapper h3),
+:deep(.chat-markdown-surface .markdown-wrapper h4),
+:deep(.chat-markdown-surface .markdown-wrapper h5),
+:deep(.chat-markdown-surface .markdown-wrapper h6) {
+  margin: 1.6em 0 0.65em;
+  color: #20201e;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper h1) {
+  font-size: 24px;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper h2) {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e3e3de;
+  font-size: 20px;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper h3) {
+  font-size: 17px;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper p) {
+  margin: 0.8em 0;
+  line-height: 1.72;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper ul),
+:deep(.chat-markdown-surface .markdown-wrapper ol) {
+  padding-left: 1.5em;
+  line-height: 1.65;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper a) {
+  padding: 0;
+  color: #4f623e;
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper blockquote) {
+  margin: 18px 0;
+  padding: 2px 0 2px 16px;
+  border-left: 3px solid #aeb7a5;
+  color: #5e605a;
+  background: transparent;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper p > code),
+:deep(.chat-markdown-surface .markdown-wrapper li > code) {
+  padding: 2px 5px;
+  border: 1px solid #dfdfda;
+  border-radius: 4px;
+  color: #353630;
+  background: #efefeb;
+}
+
+:deep(.chat-markdown-surface .markdown-code-wrapper) {
+  margin: 16px 0;
+  border: 1px solid #ddddda;
+  border-radius: 8px;
+  background: #f1f1ee;
+}
+
+:deep(.chat-markdown-surface .markdown-code-header) {
+  min-height: 38px;
+  border-color: #ddddda;
+}
+
+:deep(.chat-markdown-surface .markdown-code-lang) {
+  color: #6f706b;
+  font-size: 12px;
+}
+
+:deep(.chat-markdown-surface .markdown-code-copy) {
+  min-width: 40px;
+  min-height: 38px;
+  color: #666761;
+  transition: color 150ms ease, background-color 150ms ease;
+
+  &:hover {
+    color: #20201e;
+    background: #e7e7e2;
+  }
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper table) {
+  width: max-content;
+  max-width: 100%;
+  border: 1px solid #ddddda;
+  border-radius: 6px;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper th),
+:deep(.chat-markdown-surface .markdown-wrapper td) {
+  padding: 8px 10px;
+  border-color: #ddddda;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper th) {
+  background: #efefeb;
+}
+
+:deep(.chat-markdown-surface .markdown-wrapper tr:nth-child(even)),
+:deep(.chat-markdown-surface .markdown-wrapper tr:hover) {
+  background: transparent;
+}
+
+:deep(.chat-markdown-surface .markdown-empty-state),
+:deep(.chat-markdown-surface .n-empty) {
+  color: var(--chat-muted);
+  font-weight: 500;
+}
+
+:deep(.chat-markdown-surface .n-empty__icon) {
+  color: #7a8870;
+}
+
+:deep(.chat-markdown-surface .markdown-copy-action) {
+  top: 20px !important;
+  right: max(24px, calc((100% - 820px) / 2)) !important;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--chat-border);
+  color: var(--chat-muted);
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 1px 3px rgb(32 32 30 / 6%);
+}
+
+@media (width <= 640px) {
+
+  .chat-workspace {
+    grid-template-rows: 52px minmax(0, 1fr) auto;
+  }
+
+  .chat-toolbar {
+    gap: 8px;
+    padding: 0 12px;
+  }
+
+  .chat-brand-title,
+  .chat-model-label {
+    display: none;
+  }
+
+  .chat-model-select {
+    width: min(47vw, 180px);
+  }
+
+  .chat-help-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .chat-composer-zone {
+    padding: 7px 12px calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .prompt-suggestions {
+    flex-wrap: nowrap;
+    margin-right: -12px;
+    padding-right: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  :deep(.prompt-suggestion) {
+    flex: 0 0 auto;
+    max-width: min(78vw, 280px);
+  }
+
+  .chat-composer-editor {
+    min-height: 60px;
+  }
+
+  .chat-textarea {
+    height: 60px;
+  }
+
+  .chat-submit-button {
+    bottom: 10px;
+  }
+
+  :deep(.chat-markdown-surface .markdown-content-scroller) {
+    padding: 24px 16px 36px;
+  }
+
+  :deep(.chat-markdown-surface .markdown-wrapper) {
+    font-size: 14px;
+    line-height: 1.68;
+  }
+
+  :deep(.chat-markdown-surface .markdown-copy-action) {
+    top: 12px !important;
+    right: 12px !important;
+  }
+}
 
 </style>

@@ -29,7 +29,7 @@ withDefaults(
           content-class="w-full h-full flex"
           :show="loading"
           :rotate="false"
-          class="bg-#fefbff"
+          class="center-panel-spin"
           :style="{
             '--n-opacity-spinning': '0'
           }"
@@ -64,7 +64,10 @@ withDefaults(
 
 <style lang="scss" scoped>
 .panel-shadow {
-  --shadow: 50px 50px 100px 10px rgb(0 0 0 / 10%);
-  --at-apply: "shadow-[--shadow]"
+  box-shadow: var(--center-panel-shadow, 0 1px 4px rgb(0 0 0 / 6%));
+}
+
+.center-panel-spin {
+  background: var(--center-panel-background, #fefbff);
 }
 </style>

@@ -32,7 +32,7 @@ export default defineConfig({
       '2xl': '1920px'
     },
     colors: {
-      primary: '#692ee6',
+      primary: '#596b47',
       success: '#52c41a',
       warning: '#fe7d18',
       danger: '#fa5555',

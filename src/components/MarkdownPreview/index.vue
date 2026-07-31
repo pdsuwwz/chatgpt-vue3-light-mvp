@@ -8,12 +8,14 @@ interface Props {
   reader?: ReadableStreamDefaultReader<Uint8Array> | null | undefined
   model: string | null| undefined
   transformStreamFn: TransformFunction | null | undefined
+  contentClass?: string
 }
 
 const props = withDefaults(
   defineProps<Props>(),
   {
-    reader: null
+    reader: null,
+    contentClass: ''
   }
 )
 
@@ -340,7 +342,8 @@ const emptyPlaceholder = computed(() => {
     content-class="w-full h-full flex"
     :show="showLoading"
     :rotate="false"
-    class="bg-#fff:30"
+    class="markdown-preview bg-#fff:30"
+    :class="contentClass"
     :style="{
       '--n-opacity-spinning': '0.3'
     }"
@@ -352,7 +355,8 @@ const emptyPlaceholder = computed(() => {
         :top="30"
         :right="30"
         color
-        class="c-warning bg-#fff/80 hover:bg-#fff/90 transition-all-200 z-2"
+        aria-label="复制回答"
+        class="markdown-copy-action c-warning bg-#fff/80 hover:bg-#fff/90 transition-all-200 z-2"
         @click="handlePassClip()"
       >
         <clip-board
@@ -391,7 +395,7 @@ const emptyPlaceholder = computed(() => {
           <n-empty
             v-if="!displayText"
             size="large"
-            class="font-bold"
+            class="markdown-empty-state font-bold"
           >
             <div
               whitespace-break-spaces
@@ -408,7 +412,7 @@ const emptyPlaceholder = computed(() => {
             v-else
             ref="refWrapperContent"
             text-16
-            class="w-full h-full overflow-y-auto"
+            class="markdown-content-scroller w-full h-full min-w-0 overflow-y-auto"
             p-24px
           >
             <div
@@ -420,9 +424,16 @@ const emptyPlaceholder = computed(() => {
             />
             <div
               v-if="readerLoading"
-              size-24
-              class="i-svg-spinners:pulse-3"
-            ></div>
+              class="markdown-stream-status"
+              aria-label="正在生成回答"
+              role="status"
+            >
+              <div
+                size-24
+                class="i-svg-spinners:pulse-3"
+                aria-hidden="true"
+              ></div>
+            </div>
           </div>
         </template>
       </div>
@@ -432,6 +443,10 @@ const emptyPlaceholder = computed(() => {
 
 <style lang="scss">
 .markdown-wrapper {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+
 
   h1 {
     font-size: 2em;
@@ -542,7 +557,9 @@ const emptyPlaceholder = computed(() => {
   }
 
   table {
-    --at-apply: w-fit border-collapse my-16;
+    --at-apply: w-fit max-w-full border-collapse my-16 overflow-x-auto;
+
+    display: block;
   }
 
   th, td {
@@ -570,6 +587,20 @@ const emptyPlaceholder = computed(() => {
     p {
       --at-apply: line-height-26;
     }
+  }
+
+  img,
+  svg,
+  .mermaid {
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+
+  .mermaid {
+    overflow-x: auto;
   }
 }
 </style>

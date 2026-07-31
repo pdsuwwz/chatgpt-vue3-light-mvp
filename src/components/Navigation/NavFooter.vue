@@ -43,13 +43,15 @@ const link = ref('https://github.com/pdsuwwz')
 .footer {
   margin: 0 auto;
   width: 100%;
+  border-top: 1px solid var(--footer-border-color, transparent);
 
   --at-apply: select-none;
   --at-apply: flex justify-center;
-  --at-apply: 'bg-#fefbff';
+
+  background: var(--footer-background, #fefbff);
 
   .container {
-    padding: 14px 0;
+    padding: var(--footer-padding, 14px 0);
 
     .text {
       display: flex;
@@ -59,8 +61,8 @@ const link = ref('https://github.com/pdsuwwz')
       margin: 0;
       text-align: center;
       line-height: 1;
-      font-size: 1em;
-      color: #929292;
+      font-size: var(--footer-font-size, 1em);
+      color: var(--footer-text-color, #929292);
     }
   }
 }
