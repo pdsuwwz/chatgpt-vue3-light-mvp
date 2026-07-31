@@ -116,16 +116,21 @@ Use $chatbot-mvp-distillation-zh to design a reusable streaming chatbot UI for a
 
 ## 运行效果
 
-![image](https://github.com/user-attachments/assets/95b6c478-2522-4b6d-997f-6dabe29cf9d5)
-![image](https://github.com/user-attachments/assets/4f0b250b-beab-4076-a5a1-d2fe447f0a50)
+<img width="1460" height="1024" alt="image" src="https://github.com/user-attachments/assets/95682eea-6811-48c7-84f1-0a1d0d4a23cf" />
+
+<img width="1460" height="1024" alt="image" src="https://github.com/user-attachments/assets/f71919ed-7499-4202-8d9c-41b61ab68001" />
+
+<img width="1460" height="1024" alt="image" src="https://github.com/user-attachments/assets/df7cf9f6-f436-40dd-9a92-aca5d8f2ceaa" />
+
+<img width="1460" height="1024" alt="image" src="https://github.com/user-attachments/assets/5d9b7aa3-5cca-4d14-b808-24c7a94bc59c" />
+
 
 * Deepseek 深度思考响应结果
 
-![image](https://github.com/user-attachments/assets/9309fafc-c1b7-4cd3-95ed-def1275072b7)
 
 
+https://github.com/user-attachments/assets/e351c222-76ab-4ddc-bb4f-a04e667e6480
 
-https://github.com/user-attachments/assets/01063217-13ae-4ecd-b451-5b2e4e954afc
 
 
 
