@@ -404,18 +404,19 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 - **modelMappingList**: 定义了支持的每个大模型的 modelName, 响应结果的处理以及请求 API 函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L199)
   - **transformStreamValue**: 包含了针对各种模型的响应结果转换函数，[详见代码](src/components/MarkdownPreview/models/index.ts#L199)
-- **MarkdownPreview 组件**: 接收 `model` 和 `transformStreamFn` props 属性，根据不同模型类型处理流式响应，[详见代码](src/components/MarkdownPreview/index.vue#L9)
+- **MarkdownPreview 组件**: 接收 `model` 和 `transformStreamFn` props 属性，根据不同模型类型处理流式响应；可通过可选的 `contentClass` 为组件根节点添加页面级样式入口，[详见代码](src/components/MarkdownPreview/index.vue#L9)
 
 > 本项目的 `MarkdownPreview` 组件接收 `model` props 属性是为了回显不同的 `Placeholder`，如果你不需要可直接删掉该 props 参数及对应的回显逻辑
 
 ### 📚 使用示例
 
-在使用 [`MarkdownPreview`](src/components/MarkdownPreview/index.vue) 组件时，通过设置 `model` 和 `transformStreamFn` 属性来指定当前使用的大模型类型：
+在使用 [`MarkdownPreview`](src/components/MarkdownPreview/index.vue) 组件时，通过设置 `model` 和 `transformStreamFn` 属性来指定当前使用的大模型类型；需要为特定页面定制阅读宽度或状态对齐时，可传入可选的 `contentClass`：
 
 ```html
 <MarkdownPreview
   ref="refReaderMarkdownPreview"
   v-model:reader="outputTextReader"
+  content-class="chat-markdown-surface"
   :model="businessStore.currentModelItem?.modelName"
   :transform-stream-fn="businessStore.currentModelItem?.transformStreamValue"
   @failed="onFailedReader"
@@ -423,7 +424,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 />
 ```
 
-其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L22) 状态管理来管控：
+其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L22) 状态管理来管控。`contentClass` 只提供样式作用域，不参与模型选择或流式响应逻辑：
 
 ```ts
 export const useBusinessStore = defineStore('business-store', {

@@ -39,7 +39,7 @@
     </template>
     <div
       h-full
-      bg="#fefbff"
+      class="center-panel-surface"
     >
       <slot name="default"></slot>
     </div>
@@ -47,4 +47,7 @@
 </template>
 
 <style lang="scss" scoped>
+.center-panel-surface {
+  background: var(--center-panel-background, #fefbff);
+}
 </style>

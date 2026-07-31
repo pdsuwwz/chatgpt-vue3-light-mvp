@@ -10,7 +10,7 @@ const baseThemeOverrides: GlobalThemeOverrides = {
   }
 }
 
-const PrimaryColor = '#692ee6'
+const PrimaryColor = '#596b47'
 
 export function useTheme() {
   const defaultTheme = computed(() => {

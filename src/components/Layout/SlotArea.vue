@@ -34,7 +34,6 @@ defineOptions({
   .area-right {
     --at-apply: flex-1 overflow-y-auto;
 
-    // --at-apply: b-2 b-purple b-solid;
   }
 }
 </style>
